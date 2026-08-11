@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { MapPin, Calendar, Clock, Sparkles, Navigation } from 'lucide-react';
+import Link from 'next/link';
+import { MapPin, Calendar, Navigation, ArrowRight } from 'lucide-react';
 import { ViharSchedule } from '@/lib/store';
 
 interface ViharScheduleSectionProps {
@@ -15,6 +16,9 @@ export default function ViharScheduleSection({
   currentStayDetails,
   schedules
 }: ViharScheduleSectionProps) {
+  // Show only top 4 latest vihars on home page
+  const homeSchedules = schedules.slice(0, 4);
+
   return (
     <section id="vihar" className="py-16 bg-[#FAF8F5] relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -64,49 +68,56 @@ export default function ViharScheduleSection({
           </div>
         </div>
 
-        {/* Timeline List of Schedules */}
-        <div className="space-y-4 max-w-4xl mx-auto">
-          {schedules.map((item, idx) => (
+        {/* 2 Column Grid of Top 4 Schedules */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+          {homeSchedules.map((item, idx) => (
             <div 
               key={item.id || idx}
-              className={`glass-card rounded-2xl p-5 sm:p-6 transition-all duration-200 border ${
+              className={`glass-card rounded-2xl p-5 sm:p-6 transition-all duration-200 border flex flex-col justify-between ${
                 item.isCurrent 
                   ? 'border-amber-500 ring-2 ring-amber-400/20 bg-amber-50/40' 
                   : 'border-amber-200/60 hover:border-amber-400/80'
               }`}
             >
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                
-                <div className="space-y-1.5 flex-1">
-                  <div className="flex items-center gap-2">
-                    <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-800 bg-amber-100 px-2.5 py-0.5 rounded-md">
-                      <Calendar className="w-3.5 h-3.5 text-amber-600" />
-                      {item.date}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between gap-2 flex-wrap">
+                  <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-800 bg-amber-100 px-2.5 py-0.5 rounded-md">
+                    <Calendar className="w-3.5 h-3.5 text-amber-600" />
+                    {item.date}
+                  </span>
+                  {item.isCurrent && (
+                    <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-green-100 text-green-800 border border-green-300">
+                      ● चल रहा कार्यक्रम
                     </span>
-                    {item.isCurrent && (
-                      <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-green-100 text-green-800 border border-green-300">
-                        ● चल रहा कार्यक्रम
-                      </span>
-                    )}
-                  </div>
-                  
-                  <h3 className="text-lg font-serif font-bold text-[#1C1E26]">
-                    {item.title}
-                  </h3>
-                  
-                  <p className="text-xs text-gray-700 flex items-center gap-1.5 font-medium">
-                    <MapPin className="w-3.5 h-3.5 text-amber-600 flex-shrink-0" />
-                    <span>{item.location}</span>
-                  </p>
-
-                  <p className="text-xs text-gray-500 pt-1">
-                    {item.details}
-                  </p>
+                  )}
                 </div>
+                
+                <h3 className="text-lg font-serif font-bold text-[#1C1E26]">
+                  {item.title}
+                </h3>
+                
+                <p className="text-xs text-gray-700 flex items-start gap-1.5 font-medium">
+                  <MapPin className="w-3.5 h-3.5 text-amber-600 flex-shrink-0 mt-0.5" />
+                  <span>{item.location}</span>
+                </p>
 
+                <p className="text-xs text-gray-500 pt-1 leading-relaxed">
+                  {item.details}
+                </p>
               </div>
             </div>
           ))}
+        </div>
+
+        {/* View All Vihar Schedules Link */}
+        <div className="text-center mt-10">
+          <Link
+            href="/muni-sangh/vihar-schedules"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-amber-800 hover:bg-amber-900 text-white font-medium text-xs sm:text-sm shadow-md transition-all group"
+          >
+            <span>सभी विहार कार्यक्रम देखें (View All Vihars)</span>
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </Link>
         </div>
 
       </div>

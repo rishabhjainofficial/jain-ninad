@@ -1,0 +1,116 @@
+// Prisma Schema for Jain Ninad Application
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String   // Hashed password
+  role      String   @default("admin") // admin | editor | user
+  token     String?  @db.Text // Optional refresh token or session JWT token
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model SiteSettings {
+  id                 String   @id @default("default")
+  currentLocation    String
+  currentStayDetails String
+  mahamantraText     String
+  updatedAt          DateTime @updatedAt
+
+  @@map("site_settings")
+}
+
+model ViharSchedule {
+  id        String   @id @default(cuid())
+  date      String
+  title     String
+  location  String
+  details   String
+  isCurrent Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("vihar_schedules")
+}
+
+model Pravachan {
+  id          String   @id @default(cuid())
+  title       String
+  category    String   // Pravachan | Shrut Samadhan | Audio Book | Bhajan
+  description String   @db.Text
+  youtubeId   String?
+  audioUrl    String?
+  duration    String?
+  date        String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("pravachans")
+}
+
+model JivanNeetiQuote {
+  id           String   @id @default(cuid())
+  quoteHindi   String   @db.Text
+  quoteEnglish String?  @db.Text
+  category     String
+  likes        Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("jivan_neeti_quotes")
+}
+
+model GranthBook {
+  id           String   @id @default(cuid())
+  titleHindi   String
+  titleEnglish String
+  description  String   @db.Text
+  versesCount  String
+  coverImage   String?
+  pdfLink      String?
+  pdfFilePath  String?
+  language     String   @default("Hindi")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("granth_books")
+}
+
+model PodcastEpisode {
+  id          String   @id @default(cuid())
+  title       String
+  guestHost   String
+  description String   @db.Text
+  youtubeId   String
+  duration    String
+  date        String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("podcast_episodes")
+}
+
+model BlogUpdate {
+  id        String   @id @default(cuid())
+  title     String
+  category  String   // Blog | Bihar Updates | Program Updates
+  snippet   String   @db.Text
+  content   String   @db.Text
+  author    String   @default("Admin")
+  date      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("blog_updates")
+}

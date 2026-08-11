@@ -9,13 +9,19 @@ import JivanNeetiSection from '@/components/JivanNeetiSection';
 import GranthSection from '@/components/GranthSection';
 import UpdatesSection from '@/components/UpdatesSection';
 import Footer from '@/components/Footer';
-import { getSiteData, SiteData } from '@/lib/store';
+import { fetchSiteDataFromDb, getSiteData, SiteData } from '@/lib/store';
 
 export default function Home() {
   const [data, setData] = useState<SiteData | null>(null);
 
-  const loadData = () => {
+  const loadData = async () => {
+    // Initial quick load from local cache if present
     setData(getSiteData());
+    // Hydrate directly from PostgreSQL Database backend API
+    const dbData = await fetchSiteDataFromDb();
+    if (dbData) {
+      setData(dbData);
+    }
   };
 
   useEffect(() => {

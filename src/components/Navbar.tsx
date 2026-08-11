@@ -15,11 +15,9 @@ import {
   ChevronDown, 
   ShieldCheck, 
   Menu, 
-  X,
-  Share2,
-  MessageCircle,
-  Video
+  X
 } from 'lucide-react';
+import { YouTubeIcon, InstagramIcon, FacebookIcon, WhatsAppIcon, TelegramIcon } from './SocialIcons';
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -44,22 +42,26 @@ export default function Navbar() {
             </span>
           </div>
 
-          <div className="flex items-center space-x-4">
-            <a href="https://www.youtube.com/@muniaadityasagar" target="_blank" rel="noreferrer" className="text-amber-200/70 hover:text-amber-300 transition-colors flex items-center gap-1">
-              <Video className="w-3.5 h-3.5 text-red-400" />
+          <div className="flex items-center space-x-3.5 text-xs">
+            <a href="https://www.youtube.com/@munisuvandyasagar" target="_blank" rel="noreferrer" className="text-amber-200/70 hover:text-red-400 transition-colors flex items-center gap-1">
+              <YouTubeIcon className="w-3.5 h-3.5 text-red-500" />
               <span className="hidden md:inline">YouTube</span>
             </a>
-            <a href="https://www.instagram.com/muniaadityasagar" target="_blank" rel="noreferrer" className="text-amber-200/70 hover:text-amber-300 transition-colors flex items-center gap-1">
-              <Share2 className="w-3.5 h-3.5 text-amber-300" />
+            <a href="https://www.instagram.com/munisuvandyasagar" target="_blank" rel="noreferrer" className="text-amber-200/70 hover:text-pink-400 transition-colors flex items-center gap-1">
+              <InstagramIcon className="w-3.5 h-3.5 text-pink-400" />
               <span className="hidden md:inline">Instagram</span>
             </a>
-            <a href="https://www.facebook.com/muniaadityasagar" target="_blank" rel="noreferrer" className="text-amber-200/70 hover:text-amber-300 transition-colors flex items-center gap-1">
-              <Share2 className="w-3.5 h-3.5 text-blue-300" />
+            <a href="https://www.facebook.com/munisuvandyasagar" target="_blank" rel="noreferrer" className="text-amber-200/70 hover:text-blue-400 transition-colors flex items-center gap-1">
+              <FacebookIcon className="w-3.5 h-3.5 text-blue-400" />
               <span className="hidden md:inline">Facebook</span>
             </a>
-            <a href="https://api.whatsapp.com/send/?phone=919669885159" target="_blank" rel="noreferrer" className="text-amber-200/70 hover:text-amber-300 transition-colors flex items-center gap-1">
-              <MessageCircle className="w-3.5 h-3.5" />
+            <a href="https://api.whatsapp.com/send/?phone=919669885159" target="_blank" rel="noreferrer" className="text-amber-200/70 hover:text-emerald-400 transition-colors flex items-center gap-1">
+              <WhatsAppIcon className="w-3.5 h-3.5 text-emerald-400" />
               <span className="hidden md:inline">WhatsApp</span>
+            </a>
+            <a href="https://t.me/munisuvandyasagar" target="_blank" rel="noreferrer" className="text-amber-200/70 hover:text-sky-400 transition-colors flex items-center gap-1">
+              <TelegramIcon className="w-3.5 h-3.5 text-sky-400" />
+              <span className="hidden md:inline">Telegram</span>
             </a>
             <span className="text-amber-500/40">|</span>
             <Link href="/admin" className="text-amber-400 hover:text-amber-300 font-medium text-xs flex items-center gap-1 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
@@ -114,6 +116,10 @@ export default function Navbar() {
                     <Link href="/muni-sangh" className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-[#1C1E26] hover:bg-amber-50/80 hover:text-amber-700 transition-colors">
                       <Sparkles className="w-4 h-4 text-amber-600" />
                       <span>Muni Sangh (मुनि संघ)</span>
+                    </Link>
+                    <Link href="/muni-sangh/vihar-schedules" className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-[#1C1E26] hover:bg-amber-50/80 hover:text-amber-700 transition-colors">
+                      <MapPin className="w-4 h-4 text-amber-600" />
+                      <span>Vihar Schedules (विहार कार्यक्रम)</span>
                     </Link>
                   </div>
                 )}

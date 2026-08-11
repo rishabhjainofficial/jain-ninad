@@ -1,81 +1,53 @@
-export interface ViharSchedule {
-  id: string;
-  date: string;
-  title: string;
-  location: string;
-  details: string;
-  isCurrent?: boolean;
-}
+import { PrismaClient } from '@prisma/client';
+import { PrismaPg } from '@prisma/adapter-pg';
+import pg from 'pg';
+import bcrypt from 'bcryptjs';
 
-export interface PravachanItem {
-  id: string;
-  title: string;
-  category: 'Pravachan' | 'Shrut Samadhan' | 'Audio Book' | 'Bhajan';
-  description: string;
-  youtubeId?: string;
-  audioUrl?: string;
-  duration?: string;
-  date: string;
-}
+const connectionString = process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/jain_ninad_db?schema=public';
+const pool = new pg.Pool({ connectionString });
+const adapter = new PrismaPg(pool);
+const prisma = new PrismaClient({ adapter });
 
-export interface JivanNeetiQuote {
-  id: string;
-  quoteHindi: string;
-  quoteEnglish?: string;
-  category: string;
-  likes: number;
-}
+async function main() {
+  console.log('Starting seed process...');
 
-export interface GranthBook {
-  id: string;
-  titleHindi: string;
-  titleEnglish: string;
-  description: string;
-  versesCount: string;
-  coverImage?: string;
-  pdfLink?: string;
-  pdfFilePath?: string;
-  language: string;
-}
+  // 1. Admin User Seed
+  const adminEmail = 'admin@gmail.com';
+  const hashedPassword = await bcrypt.hash('12345678', 10);
 
-export interface PodcastEpisode {
-  id: string;
-  title: string;
-  guestHost: string;
-  description: string;
-  youtubeId: string;
-  duration: string;
-  date: string;
-}
+  const admin = await prisma.user.upsert({
+    where: { email: adminEmail },
+    update: {
+      password: hashedPassword,
+    },
+    create: {
+      name: 'Admin',
+      email: adminEmail,
+      password: hashedPassword,
+      role: 'admin',
+    },
+  });
+  console.log('Seeded admin user:', admin.email);
 
-export interface BlogUpdate {
-  id: string;
-  title: string;
-  category: 'Blog' | 'Bihar Updates' | 'Program Updates';
-  snippet: string;
-  content: string;
-  date: string;
-  author: string;
-}
+  // 2. Site Settings Seed
+  await prisma.siteSettings.upsert({
+    where: { id: 'default' },
+    update: {
+      currentLocation: 'दिगंबर जैन भवन, नागदा बाजार, सलूम्बर (राजस्थान)',
+      currentStayDetails: 'परम पूज्य निर्ग्रन्थ मुनि श्री 108 सुवन्द्य सागर जी महाराज ससंघ का पावन चातुर्मास प्रवास एवं स्वाध्याय charyaa',
+      mahamantraText: 'ॐ Ignoraay नमः  |  ॐ Deletaaya नमः',
+    },
+    create: {
+      id: 'default',
+      currentLocation: 'दिगंबर जैन भवन, नागदा बाजार, सलूम्बर (राजस्थान)',
+      currentStayDetails: 'परम पूज्य निर्ग्रन्थ मुनि श्री 108 सुवन्द्य सागर जी महाराज ससंघ का पावन चातुर्मास प्रवास एवं स्वाध्याय charyaa',
+      mahamantraText: 'ॐ Ignoraay नमः  |  ॐ Deletaaya नमः',
+    },
+  });
+  console.log('Seeded site settings');
 
-export interface SiteData {
-  currentLocation: string;
-  currentStayDetails: string;
-  mahamantraText: string;
-  viharSchedules: ViharSchedule[];
-  pravachans: PravachanItem[];
-  jivanNeetiQuotes: JivanNeetiQuote[];
-  granthBooks: GranthBook[];
-  podcasts: PodcastEpisode[];
-  blogs: BlogUpdate[];
-}
-
-const INITIAL_DATA: SiteData = {
-  currentLocation: "दिगंबर जैन भवन, नागदा बाजार, सलूम्बर (राजस्थान)",
-  currentStayDetails: "परम पूज्य निर्ग्रन्थ मुनि श्री 108 सुवन्द्य सागर जी महाराज ससंघ का पावन चातुर्मास प्रवास एवं स्वाध्याय charyaa",
-  mahamantraText: "ॐ Ignoraay नमः  |  ॐ Deletaaya नमः",
-  
-  viharSchedules: [
+  // 3. Vihar Schedules
+  const viharSchedules = [
     {
       id: "v1",
       date: "26 फ़रवरी 2025",
@@ -116,9 +88,19 @@ const INITIAL_DATA: SiteData = {
       details: "सामूहिक विधान एवं दिव्य देशना",
       isCurrent: false
     }
-  ],
+  ];
 
-  pravachans: [
+  for (const item of viharSchedules) {
+    await prisma.viharSchedule.upsert({
+      where: { id: item.id },
+      update: item,
+      create: item,
+    });
+  }
+  console.log('Seeded vihar schedules');
+
+  // 4. Pravachans
+  const pravachans = [
     {
       id: "p1",
       title: "वक्त बनाने का रहस्य",
@@ -155,9 +137,19 @@ const INITIAL_DATA: SiteData = {
       duration: "40:10",
       date: "25 Jan 2025"
     }
-  ],
+  ];
 
-  jivanNeetiQuotes: [
+  for (const item of pravachans) {
+    await prisma.pravachan.upsert({
+      where: { id: item.id },
+      update: item,
+      create: item,
+    });
+  }
+  console.log('Seeded pravachans');
+
+  // 5. Jivan Neeti Quotes
+  const quotes = [
     {
       id: "q1",
       quoteHindi: "संसार की हर वस्तु परिवर्तनशील है, केवल आपकी अपनी आत्मा ही अजर-अमर और सत्य है।",
@@ -179,9 +171,19 @@ const INITIAL_DATA: SiteData = {
       category: "जीवन मंत्र",
       likes: 2150
     }
-  ],
+  ];
 
-  granthBooks: [
+  for (const item of quotes) {
+    await prisma.jivanNeetiQuote.upsert({
+      where: { id: item.id },
+      update: item,
+      create: item,
+    });
+  }
+  console.log('Seeded quotes');
+
+  // 6. Granth Books
+  const granthBooks = [
     {
       id: "b1",
       titleHindi: "सम्यग्ज्ञान दीपक",
@@ -189,7 +191,8 @@ const INITIAL_DATA: SiteData = {
       description: "जैन दर्शन के मौलिक सिद्धांतों और आत्मसाधना पर रचित 500 से अधिक संस्कृत श्लोक मय व्याख्या।",
       versesCount: "520 श्लोक",
       language: "संस्कृत / हिंदी",
-      coverImage: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80"
+      coverImage: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80",
+      pdfFilePath: null
     },
     {
       id: "b2",
@@ -198,7 +201,8 @@ const INITIAL_DATA: SiteData = {
       description: "आचार्य पूज्यपाद कृत इष्टोपदेश ग्रंथ पर मुनि श्री सुवन्द्य सागर जी की प्रांजल टीका।",
       versesCount: "350 श्लोक",
       language: "प्राकृत / हिंदी",
-      coverImage: "https://images.unsplash.com/photo-1532012164546-f43249488629?auto=format&fit=crop&w=600&q=80"
+      coverImage: "https://images.unsplash.com/photo-1532012164546-f43249488629?auto=format&fit=crop&w=600&q=80",
+      pdfFilePath: null
     },
     {
       id: "b3",
@@ -207,11 +211,22 @@ const INITIAL_DATA: SiteData = {
       description: "आत्मा के उत्थान और ध्यान साधना हेतु रचित भक्ति श्लोक संग्रह।",
       versesCount: "1200 श्लोक",
       language: "संस्कृत",
-      coverImage: "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80"
+      coverImage: "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80",
+      pdfFilePath: null
     }
-  ],
+  ];
 
-  podcasts: [
+  for (const item of granthBooks) {
+    await prisma.granthBook.upsert({
+      where: { id: item.id },
+      update: item,
+      create: item,
+    });
+  }
+  console.log('Seeded granth books');
+
+  // 7. Podcasts
+  const podcasts = [
     {
       id: "pod1",
       title: "मुनि सुवन्द्य सागर जी के संग आध्यात्मिक संवाद",
@@ -221,9 +236,19 @@ const INITIAL_DATA: SiteData = {
       duration: "54:20",
       date: "14 Feb 2025"
     }
-  ],
+  ];
 
-  blogs: [
+  for (const item of podcasts) {
+    await prisma.podcastEpisode.upsert({
+      where: { id: item.id },
+      update: item,
+      create: item,
+    });
+  }
+  console.log('Seeded podcasts');
+
+  // 8. Blogs
+  const blogs = [
     {
       id: "blog1",
       title: "श्रुतसंवेगी महाश्रमण ससंघ का इंदौर नगर में भव्य प्रवेश",
@@ -242,51 +267,25 @@ const INITIAL_DATA: SiteData = {
       date: "08 Feb 2025",
       author: "प्रचार समिति"
     }
-  ]
-};
+  ];
 
-const STORAGE_KEY = "jain_ninad_site_data_v1";
-
-export function getSiteData(): SiteData {
-  if (typeof window === "undefined") return INITIAL_DATA;
-  try {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) return JSON.parse(saved);
-  } catch (e) {
-    console.error("Error reading site data", e);
+  for (const item of blogs) {
+    await prisma.blogUpdate.upsert({
+      where: { id: item.id },
+      update: item,
+      create: item,
+    });
   }
-  return INITIAL_DATA;
+  console.log('Seeded blogs');
+
+  console.log('Seeding completed successfully!');
 }
 
-export function saveSiteData(data: SiteData): void {
-  if (typeof window === "undefined") return;
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-    window.dispatchEvent(new Event("site_data_updated"));
-  } catch (e) {
-    console.error("Error saving site data", e);
-  }
-}
-
-export async function fetchSiteDataFromDb(): Promise<SiteData> {
-  try {
-    const res = await fetch('/api/site-data', { cache: 'no-store' });
-    if (res.ok) {
-      const data = await res.json();
-      return {
-        currentLocation: data.currentLocation || INITIAL_DATA.currentLocation,
-        currentStayDetails: data.currentStayDetails || INITIAL_DATA.currentStayDetails,
-        mahamantraText: data.mahamantraText || INITIAL_DATA.mahamantraText,
-        viharSchedules: data.viharSchedules || INITIAL_DATA.viharSchedules,
-        pravachans: data.pravachans || INITIAL_DATA.pravachans,
-        jivanNeetiQuotes: data.jivanNeetiQuotes || INITIAL_DATA.jivanNeetiQuotes,
-        granthBooks: data.granthBooks || INITIAL_DATA.granthBooks,
-        podcasts: data.podcasts || INITIAL_DATA.podcasts,
-        blogs: data.blogs || INITIAL_DATA.blogs,
-      };
-    }
-  } catch (e) {
-    console.error('Error fetching site data from DB, falling back to local data', e);
-  }
-  return getSiteData();
-}
+main()
+  .catch((e) => {
+    console.error('Error seeding data:', e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
