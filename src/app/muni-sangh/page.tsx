@@ -1,10 +1,14 @@
-'use client';
-
+import { Metadata } from 'next';
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Sparkles, HeartHandshake, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
+
+export const metadata: Metadata = {
+  title: "मुनि संघ व गुरु परम्परा | मुनि श्री 108 सुवन्द्य सागर जी महाराज",
+  description: "आचार्य श्री 108 सुविधि सागर जी महाराज एवं दिगम्बर जैन मुनि परम्परा (आचार्य आदिसगर अंकलीकर परम्परा)।",
+};
 
 export default function MuniSanghPage() {
   return (

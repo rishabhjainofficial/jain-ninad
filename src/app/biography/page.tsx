@@ -1,10 +1,14 @@
-'use client';
-
+import { Metadata } from 'next';
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Feather, Award, BookOpen, CheckCircle, GraduationCap, MapPin, Calendar, HeartHandshake } from 'lucide-react';
 import Link from 'next/link';
+
+export const metadata: Metadata = {
+  title: "जीवन परिचय (Biography) | मुनि श्री 108 सुवन्द्य सागर जी महाराज",
+  description: "परम पूज्य निर्ग्रन्थ मुनि श्री 108 सुवन्द्य सागर जी महाराज का जीवन परिचय, बाल्यकाल, मुनि दीक्षा, आगमानुसारी चर्या, 24+ रचित ग्रन्थ एवं चातुर्मास विवरण।",
+};
 
 export default function BiographyPage() {
   return (
