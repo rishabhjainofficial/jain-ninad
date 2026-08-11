@@ -60,10 +60,10 @@ export async function POST(request: Request) {
     });
 
     return response;
-  } catch (error) {
+  } catch (error: any) {
     console.error('Login error:', error);
     return NextResponse.json(
-      { error: 'An unexpected error occurred during login' },
+      { error: error?.message || 'An unexpected error occurred during login' },
       { status: 500 }
     );
   }
