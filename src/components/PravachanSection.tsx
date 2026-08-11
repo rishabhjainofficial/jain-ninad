@@ -12,6 +12,14 @@ export default function PravachanSection({ pravachans }: PravachanSectionProps) 
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [activeVideoId, setActiveVideoId] = useState<string | null>(null);
 
+  const categoryLabels: Record<string, string> = {
+    'All': 'सभी देखें (All)',
+    'Pravachan': 'प्रवचन (Pravachan)',
+    'Shrut Samadhan': 'श्रुत समाधान (Shrut Samadhan)',
+    'Audio Book': 'ऑडियो बुक (Audio Book)',
+    'Bhajan': 'भजन (Bhajan)',
+  };
+
   const categories = ['All', 'Pravachan', 'Shrut Samadhan', 'Audio Book', 'Bhajan'];
 
   const filteredItems = selectedCategory === 'All'
@@ -48,7 +56,7 @@ export default function PravachanSection({ pravachans }: PravachanSectionProps) 
                   : 'bg-amber-50/80 text-gray-700 hover:bg-amber-100 border border-amber-200/60'
               }`}
             >
-              {cat === 'All' ? 'सभी देखें (All)' : cat}
+              {categoryLabels[cat] || cat}
             </button>
           ))}
         </div>
@@ -63,7 +71,7 @@ export default function PravachanSection({ pravachans }: PravachanSectionProps) 
               <div className="p-6 space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="px-2.5 py-1 rounded-md text-[11px] font-bold bg-amber-100 text-amber-900 border border-amber-300/40">
-                    {item.category}
+                    {categoryLabels[item.category] || item.category}
                   </span>
                   <span className="text-xs text-gray-400 font-sans">
                     {item.date}
