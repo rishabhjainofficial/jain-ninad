@@ -91,7 +91,7 @@ export default function HeroSection({ data }: HeroSectionProps) {
                 {/* Muni Shri Portrait */}
                 <div className="w-36 h-36 mx-auto rounded-full overflow-hidden bg-gradient-to-tr from-amber-100 to-amber-50 border-4 border-amber-300/80 shadow-md">
                   <img 
-                    src="/suvandya-sagar-ji.png" 
+                    src="/suvandya-sagar-ji.webp" 
                     alt="मुनि श्री 108 सुवन्द्य सागर जी महाराज" 
                     className="w-full h-full object-cover object-top"
                   />

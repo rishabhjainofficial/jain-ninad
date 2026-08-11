@@ -22,7 +22,7 @@ export default function BiographyPage() {
           <div className="text-center space-y-4">
             <div className="w-40 h-40 mx-auto rounded-full overflow-hidden border-4 border-amber-300 shadow-lg bg-amber-50">
               <img 
-                src="/suvandya-sagar-ji.png" 
+                src="/suvandya-sagar-ji.webp" 
                 alt="पूज्य निर्ग्रन्थ मुनि श्री 108 सुवन्द्य सागर जी महाराज" 
                 className="w-full h-full object-cover object-top"
               />

@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     siteName: "मुनि श्री 108 सुवन्द्य सागर जी महाराज",
     images: [
       {
-        url: "/suvandya-sagar-ji.png",
+        url: "/suvandya-sagar-ji.webp",
         width: 800,
         height: 800,
         alt: "मुनि श्री 108 सुवन्द्य सागर जी महाराज",
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "मुनि श्री 108 सुवन्द्य सागर जी महाराज | Jain Dharma & Pravachan",
     description: "परम पूज्य निर्ग्रन्थ मुनि श्री 108 सुवन्द्य सागर जी महाराज के पावन प्रवचन एवं आगमानुसारी चर्या।",
-    images: ["/suvandya-sagar-ji.png"],
+    images: ["/suvandya-sagar-ji.webp"],
   },
   icons: {
     icon: [

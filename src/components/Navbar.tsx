@@ -78,7 +78,7 @@ export default function Navbar() {
             <Link href="/" className="flex items-center gap-3 group">
               <div className="w-12 h-12 rounded-full overflow-hidden bg-gradient-to-tr from-amber-600 via-amber-500 to-amber-300 flex items-center justify-center shadow-md border-2 border-amber-300/80 group-hover:scale-105 transition-transform flex-shrink-0">
                 <img 
-                  src="/suvandya-sagar-ji.png" 
+                  src="/suvandya-sagar-ji.webp" 
                   alt="गुरु सुवन्द्य सागर" 
                   className="w-full h-full object-cover object-top"
                 />
