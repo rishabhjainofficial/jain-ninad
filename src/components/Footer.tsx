@@ -116,12 +116,20 @@ export default function Footer() {
 
         </div>
 
-        {/* Bottom Disclaimer */}
+        {/* Bottom Disclaimer & Developer Credits */}
         <div className="pt-8 border-t border-amber-900/40 text-center text-xs text-amber-200/40 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p>© {new Date().getFullYear()} Muni Shri 108 Suvandya Sagar Ji Maharaj. Peaceful Spiritual Portal.</p>
-          <div className="flex items-center gap-1">
-            <span>Built with devotion & peace</span>
-            <Heart className="w-3.5 h-3.5 text-amber-500 fill-current" />
+          <p>© {new Date().getFullYear()} Muni Shri 108 Suvandyasagar Ji Maharaj. Peaceful Spiritual Portal.</p>
+          <div className="flex items-center gap-1.5">
+            <span>Built with devotion by</span>
+            <a 
+              href="https://dev-rishabh.vercel.app/" 
+              target="_blank" 
+              rel="noreferrer"
+              className="text-amber-400 font-semibold hover:text-amber-300 underline underline-offset-2 transition-colors"
+            >
+              Rishabh Jain
+            </a>
+            <Heart className="w-3.5 h-3.5 text-amber-500 fill-current ml-0.5" />
           </div>
         </div>
 
