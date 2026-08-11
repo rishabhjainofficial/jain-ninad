@@ -88,9 +88,13 @@ export default function HeroSection({ data }: HeroSectionProps) {
               <div className="absolute -inset-1 bg-gradient-to-r from-amber-300 via-amber-500 to-amber-200 rounded-3xl blur-md opacity-40"></div>
               
               <div className="relative glass-card rounded-3xl p-6 sm:p-8 space-y-6 text-center border border-amber-200">
-                {/* Spiritual Symbol Placeholder Frame */}
-                <div className="w-28 h-28 mx-auto rounded-full bg-gradient-to-tr from-amber-100 to-amber-50 border-2 border-amber-300/60 flex items-center justify-center shadow-inner">
-                  <span className="text-4xl font-serif text-amber-700">ॐ</span>
+                {/* Muni Shri Portrait */}
+                <div className="w-36 h-36 mx-auto rounded-full overflow-hidden bg-gradient-to-tr from-amber-100 to-amber-50 border-4 border-amber-300/80 shadow-md">
+                  <img 
+                    src="/suvandya-sagar-ji.png" 
+                    alt="मुनि श्री 108 सुवन्द्य सागर जी महाराज" 
+                    className="w-full h-full object-cover object-top"
+                  />
                 </div>
 
                 <div className="space-y-2">

@@ -16,6 +16,14 @@ export default function BiographyPage() {
           
           {/* Header Banner */}
           <div className="text-center space-y-4">
+            <div className="w-40 h-40 mx-auto rounded-full overflow-hidden border-4 border-amber-300 shadow-lg bg-amber-50">
+              <img 
+                src="/suvandya-sagar-ji.png" 
+                alt="पूज्य निर्ग्रन्थ मुनि श्री 108 सुवन्द्य सागर जी महाराज" 
+                className="w-full h-full object-cover object-top"
+              />
+            </div>
+
             <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-amber-100/80 border border-amber-300/60 text-amber-900 text-xs font-semibold">
               <Feather className="w-3.5 h-3.5 text-amber-600" />
               <span>जीवन वृत्तांत एवं आगमानुसारी चर्या</span>

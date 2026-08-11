@@ -76,8 +76,12 @@ export default function Navbar() {
           <div className="flex justify-between items-center h-20">
             {/* Brand Logo */}
             <Link href="/" className="flex items-center gap-3 group">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-amber-600 via-amber-500 to-amber-300 flex items-center justify-center shadow-md border border-amber-200/60 group-hover:scale-105 transition-transform">
-                <Sparkles className="w-6 h-6 text-white" />
+              <div className="w-12 h-12 rounded-full overflow-hidden bg-gradient-to-tr from-amber-600 via-amber-500 to-amber-300 flex items-center justify-center shadow-md border-2 border-amber-300/80 group-hover:scale-105 transition-transform flex-shrink-0">
+                <img 
+                  src="/suvandya-sagar-ji.png" 
+                  alt="गुरु सुवन्द्य सागर" 
+                  className="w-full h-full object-cover object-top"
+                />
               </div>
               <div className="flex flex-col">
                 <span className="text-lg font-serif font-bold text-[#1C1E26] tracking-wide leading-tight group-hover:text-amber-700 transition-colors">
