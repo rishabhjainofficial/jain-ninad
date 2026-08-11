@@ -15,12 +15,11 @@ export default function PravachanSection({ pravachans }: PravachanSectionProps) 
   const categoryLabels: Record<string, string> = {
     'All': 'सभी देखें (All)',
     'Pravachan': 'प्रवचन (Pravachan)',
-    'Shrut Samadhan': 'श्रुत समाधान (Shrut Samadhan)',
     'Audio Book': 'ऑडियो बुक (Audio Book)',
     'Bhajan': 'भजन (Bhajan)',
   };
 
-  const categories = ['All', 'Pravachan', 'Shrut Samadhan', 'Audio Book', 'Bhajan'];
+  const categories = ['All', 'Pravachan', 'Audio Book', 'Bhajan'];
 
   const filteredItems = selectedCategory === 'All'
     ? pravachans
@@ -37,7 +36,7 @@ export default function PravachanSection({ pravachans }: PravachanSectionProps) 
             <span>पावन देशना एवं ऑडियो ग्रंथ</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#1C1E26]">
-            प्रवचन, श्रुत समाधान एवं स्वाध्याय
+            प्रवचन एवं स्वाध्याय
           </h2>
           <p className="text-sm text-gray-600">
             प्रेरणा के वे अमृत वचन, जो अज्ञान को मिटाकर जीवन में सम्यक् ज्ञान का प्रकाश जगाते हैं।

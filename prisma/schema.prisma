@@ -47,7 +47,7 @@ model ViharSchedule {
 model Pravachan {
   id          String   @id @default(cuid())
   title       String
-  category    String   // Pravachan | Shrut Samadhan | Audio Book | Bhajan
+  category    String   // Pravachan | Audio Book | Bhajan
   description String   @db.Text
   youtubeId   String?
   audioUrl    String?

@@ -10,7 +10,7 @@ export interface ViharSchedule {
 export interface PravachanItem {
   id: string;
   title: string;
-  category: 'Pravachan' | 'Shrut Samadhan' | 'Audio Book' | 'Bhajan';
+  category: 'Pravachan' | 'Audio Book' | 'Bhajan';
   description: string;
   youtubeId?: string;
   audioUrl?: string;
@@ -149,7 +149,7 @@ const INITIAL_DATA: SiteData = {
     {
       id: "p4",
       title: "कर्म सिद्धांत एवं समाधान",
-      category: "Shrut Samadhan",
+      category: "Pravachan",
       description: "श्रोताओं के गूढ़ आध्यात्मिक प्रश्नों के प्रामाणिक एवं सरल समाधान।",
       youtubeId: "dQw4w9WgXcQ",
       duration: "40:10",

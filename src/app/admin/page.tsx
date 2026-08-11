@@ -570,7 +570,7 @@ export default function AdminPage() {
             }`}
           >
             <Radio className="w-3.5 h-3.5" />
-            <span>प्रवचन एवं श्रुत समाधान</span>
+            <span>प्रवचन एवं ऑडियो ग्रंथ</span>
           </button>
 
           <button
@@ -808,7 +808,7 @@ export default function AdminPage() {
             <div className="glass-card rounded-2xl p-6 border border-amber-200 space-y-4">
               <h3 className="text-base font-serif font-bold text-[#1C1E26] flex items-center gap-2">
                 <Plus className="w-4 h-4 text-amber-600" />
-                <span>नया प्रवचन/श्रुत समाधान जोड़ें</span>
+                <span>नया प्रवचन जोड़ें</span>
               </h3>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -825,7 +825,6 @@ export default function AdminPage() {
                   className="px-3 py-2 text-xs rounded-xl bg-white border border-amber-200"
                 >
                   <option value="Pravachan">Pravachan</option>
-                  <option value="Shrut Samadhan">Shrut Samadhan</option>
                   <option value="Audio Book">Audio Book</option>
                   <option value="Bhajan">Bhajan</option>
                 </select>

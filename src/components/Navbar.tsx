@@ -137,10 +137,6 @@ export default function Navbar() {
                       <Radio className="w-4 h-4 text-amber-600" />
                       <span>Deshna Pravachan</span>
                     </Link>
-                    <Link href="/#shrut-samadhan" className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-[#1C1E26] hover:bg-amber-50/80 hover:text-amber-700 transition-colors">
-                      <Sparkles className="w-4 h-4 text-amber-600" />
-                      <span>Shrut Samadhan (श्रुत समाधान)</span>
-                    </Link>
                     <Link href="/#jivan-neeti" className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-[#1C1E26] hover:bg-amber-50/80 hover:text-amber-700 transition-colors">
                       <BookOpen className="w-4 h-4 text-amber-600" />
                       <span>Jivan Neeti (जीवन नीति)</span>

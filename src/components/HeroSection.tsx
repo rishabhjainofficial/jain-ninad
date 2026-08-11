@@ -130,7 +130,7 @@ export default function HeroSection({ data }: HeroSectionProps) {
                   href="#pravachan" 
                   className="block w-full py-2.5 rounded-lg bg-amber-50 text-amber-900 font-medium text-xs hover:bg-amber-100 transition-colors border border-amber-200"
                 >
-                  प्रवचन एवं श्रुत समाधान देखें →
+                  प्रवचन एवं स्वाध्याय देखें →
                 </a>
               </div>
             </div>
