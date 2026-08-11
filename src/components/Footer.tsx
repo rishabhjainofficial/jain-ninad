@@ -81,65 +81,55 @@ export default function Footer() {
             <h4 className="text-sm font-serif font-bold text-amber-300 uppercase tracking-wider">
               पावन सोशल मीडिया (Social Media)
             </h4>
-            <div className="flex flex-col space-y-2.5 text-xs">
+            <div className="flex flex-wrap items-center gap-3 pt-1">
               <a 
                 href="https://www.youtube.com/@munisuvandyasagar" 
                 target="_blank" 
                 rel="noreferrer" 
-                className="flex items-center gap-2 text-amber-100/80 hover:text-red-400 transition-colors group"
+                title="YouTube"
+                className="p-2.5 rounded-xl bg-red-600/20 hover:bg-red-600 text-red-500 hover:text-white transition-colors border border-red-500/20"
               >
-                <div className="p-1.5 rounded-lg bg-red-600/20 group-hover:bg-red-600 text-red-500 group-hover:text-white transition-colors">
-                  <YouTubeIcon className="w-4 h-4" />
-                </div>
-                <span>यूट्यूब (YouTube) @munisuvandyasagar</span>
+                <YouTubeIcon className="w-5 h-5" />
               </a>
 
               <a 
                 href="https://www.instagram.com/munisuvandyasagar" 
                 target="_blank" 
                 rel="noreferrer" 
-                className="flex items-center gap-2 text-amber-100/80 hover:text-pink-400 transition-colors group"
+                title="Instagram"
+                className="p-2.5 rounded-xl bg-pink-600/20 hover:bg-gradient-to-tr hover:from-amber-500 hover:via-pink-500 hover:to-purple-600 text-pink-400 hover:text-white transition-colors border border-pink-500/20"
               >
-                <div className="p-1.5 rounded-lg bg-pink-600/20 group-hover:bg-gradient-to-tr group-hover:from-amber-500 group-hover:via-pink-500 group-hover:to-purple-600 text-pink-400 group-hover:text-white transition-colors">
-                  <InstagramIcon className="w-4 h-4" />
-                </div>
-                <span>इंस्टाग्राम (Instagram) @munisuvandyasagar</span>
+                <InstagramIcon className="w-5 h-5" />
               </a>
 
               <a 
                 href="https://www.facebook.com/munisuvandyasagar" 
                 target="_blank" 
                 rel="noreferrer" 
-                className="flex items-center gap-2 text-amber-100/80 hover:text-blue-400 transition-colors group"
+                title="Facebook"
+                className="p-2.5 rounded-xl bg-blue-600/20 hover:bg-blue-600 text-blue-400 hover:text-white transition-colors border border-blue-500/20"
               >
-                <div className="p-1.5 rounded-lg bg-blue-600/20 group-hover:bg-blue-600 text-blue-400 group-hover:text-white transition-colors">
-                  <FacebookIcon className="w-4 h-4" />
-                </div>
-                <span>फेसबुक (Facebook) @munisuvandyasagar</span>
+                <FacebookIcon className="w-5 h-5" />
               </a>
 
               <a 
                 href="https://api.whatsapp.com/send/?phone=919669885159" 
                 target="_blank" 
                 rel="noreferrer" 
-                className="flex items-center gap-2 text-amber-100/80 hover:text-emerald-400 transition-colors group"
+                title="WhatsApp"
+                className="p-2.5 rounded-xl bg-emerald-600/20 hover:bg-emerald-600 text-emerald-400 hover:text-white transition-colors border border-emerald-500/20"
               >
-                <div className="p-1.5 rounded-lg bg-emerald-600/20 group-hover:bg-emerald-600 text-emerald-400 group-hover:text-white transition-colors">
-                  <WhatsAppIcon className="w-4 h-4" />
-                </div>
-                <span>व्हाट्सएप (WhatsApp) (+91 96698 85159)</span>
+                <WhatsAppIcon className="w-5 h-5" />
               </a>
 
               <a 
                 href="https://t.me/munisuvandyasagar" 
                 target="_blank" 
                 rel="noreferrer" 
-                className="flex items-center gap-2 text-amber-100/80 hover:text-sky-400 transition-colors group"
+                title="Telegram"
+                className="p-2.5 rounded-xl bg-sky-600/20 hover:bg-sky-500 text-sky-400 hover:text-white transition-colors border border-sky-500/20"
               >
-                <div className="p-1.5 rounded-lg bg-sky-600/20 group-hover:bg-sky-500 text-sky-400 group-hover:text-white transition-colors">
-                  <TelegramIcon className="w-4 h-4" />
-                </div>
-                <span>टेलीग्राम (Telegram) Deshna Channel</span>
+                <TelegramIcon className="w-5 h-5" />
               </a>
             </div>
           </div>
