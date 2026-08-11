@@ -37,7 +37,7 @@ export default function JivanNeetiSection({ quotes }: JivanNeetiSectionProps) {
             जीवन नीति (Jivan Neeti)
           </h2>
           <p className="text-sm text-gray-600">
-            मुनि श्री 108 सुवंद्य सागर जी महाराज के अमूल्य सूत्र, जो जीवन को संयम, विवेक और साधना की ओर ले जाते हैं।
+            मुनि श्री 108 सुवन्द्य सागर जी महाराज के अमूल्य सूत्र, जो जीवन को संयम, विवेक और साधना की ओर ले जाते हैं।
           </p>
         </div>
 

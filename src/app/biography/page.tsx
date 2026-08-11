@@ -22,7 +22,7 @@ export default function BiographyPage() {
             </div>
 
             <h1 className="text-4xl sm:text-5xl font-serif font-bold text-[#1C1E26]">
-              पूज्य निर्ग्रन्थ मुनि श्री 108 सुवंद्य सागर जी महाराज
+              पूज्य निर्ग्रन्थ मुनि श्री 108 सुवन्द्य सागर जी महाराज
             </h1>
             <p className="text-sm text-gray-600 font-sans max-w-2xl mx-auto">
               त्याग, तप एवं आगमानुसार चर्या का अनुपम आदर्श। समस्त परिग्रहों का पूर्ण त्याग कर मोक्षमार्ग पर अग्रसर दिगम्बर मुनि।
@@ -97,7 +97,7 @@ export default function BiographyPage() {
               </div>
 
               <p className="text-sm text-gray-700 leading-relaxed font-sans">
-                मुनि श्री १०८ सुवंद्य सागर जी महाराज ने अनेक जैन आगमों का गहन स्वाध्याय कर हिंदी एवं मराठी भाषाओं में 24 से अधिक ग्रंथों का लेखन एवं पद्यानुवाद किया है।
+                मुनि श्री १०८ सुवन्द्य सागर जी महाराज ने अनेक जैन आगमों का गहन स्वाध्याय कर हिंदी एवं मराठी भाषाओं में 24 से अधिक ग्रंथों का लेखन एवं पद्यानुवाद किया है।
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2 text-xs">

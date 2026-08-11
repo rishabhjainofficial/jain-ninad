@@ -40,7 +40,7 @@ export default function Navbar() {
               Live Deshna
             </span>
             <span className="hidden sm:inline text-amber-200/80 font-serif">
-              मुनि श्री 108 सुवंद्य सागर जी महाराज • पावन स्वाध्याय एवं प्रवचन
+              मुनि श्री 108 सुवन्द्य सागर जी महाराज • पावन स्वाध्याय एवं प्रवचन
             </span>
           </div>
 
@@ -81,7 +81,7 @@ export default function Navbar() {
               </div>
               <div className="flex flex-col">
                 <span className="text-lg font-serif font-bold text-[#1C1E26] tracking-wide leading-tight group-hover:text-amber-700 transition-colors">
-                  गुरु सुवंद्य सागर
+                  गुरु सुवन्द्य सागर
                 </span>
                 <span className="text-[11px] text-amber-800/70 tracking-widest uppercase font-medium">
                   Spiritual Guidance & Peace

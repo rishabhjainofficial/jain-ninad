@@ -38,7 +38,7 @@ export default function HeroSection({ data }: HeroSectionProps) {
             {/* Title & Name */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-[#1C1E26] leading-tight">
               मुनि श्री 108 <br />
-              <span className="gold-gradient-text">सुवंद्य सागर जी महाराज</span>
+              <span className="gold-gradient-text">सुवन्द्य सागर जी महाराज</span>
             </h1>
 
             {/* Mahamantra Highlight Box */}
