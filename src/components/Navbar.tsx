@@ -135,7 +135,7 @@ export default function Navbar() {
                   <div className="absolute top-full left-0 w-64 glass-card rounded-xl shadow-xl py-2 border border-amber-200/60 animate-in fade-in slide-in-from-top-2 duration-150">
                     <Link href="/#pravachan" className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-[#1C1E26] hover:bg-amber-50/80 hover:text-amber-700 transition-colors">
                       <Radio className="w-4 h-4 text-amber-600" />
-                      <span>Deshna Pravachan</span>
+                      <span>Deshna Pravachan (देशना प्रवचन)</span>
                     </Link>
                     <Link href="/#jivan-neeti" className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-[#1C1E26] hover:bg-amber-50/80 hover:text-amber-700 transition-colors">
                       <BookOpen className="w-4 h-4 text-amber-600" />
@@ -143,7 +143,7 @@ export default function Navbar() {
                     </Link>
                     <Link href="/#podcasts" className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-[#1C1E26] hover:bg-amber-50/80 hover:text-amber-700 transition-colors">
                       <Radio className="w-4 h-4 text-amber-600" />
-                      <span>Spiritual Podcast</span>
+                      <span>Spiritual Podcast (आध्यात्मिक पॉडकास्ट)</span>
                     </Link>
                   </div>
                 )}
@@ -206,14 +206,21 @@ export default function Navbar() {
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="block px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-amber-50"
               >
-                Pravachans
+                Deshna Pravachan (देशना प्रवचन)
               </Link>
               <Link 
                 href="/#jivan-neeti" 
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="block px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-amber-50"
               >
-                Jivan Neeti
+                Jivan Neeti (जीवन नीति)
+              </Link>
+              <Link 
+                href="/#podcasts" 
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="block px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-amber-50"
+              >
+                Spiritual Podcast (आध्यात्मिक पॉडकास्ट)
               </Link>
             </div>
 
