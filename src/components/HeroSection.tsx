@@ -2,12 +2,12 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { 
-  Sparkles, 
-  MapPin, 
-  BookOpen, 
-  Radio, 
-  ChevronRight, 
+import {
+  Sparkles,
+  MapPin,
+  BookOpen,
+  Radio,
+  ChevronRight,
   Feather,
   HeartHandshake
 } from 'lucide-react';
@@ -26,13 +26,13 @@ export default function HeroSection({ data }: HeroSectionProps) {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          
+
           {/* Main Hero Copy */}
           <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
             {/* Spiritual Pill Badge */}
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-100/70 border border-amber-300/50 text-amber-900 text-xs font-medium tracking-wide shadow-xs">
               <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-              <span>दिगम्बर जैन परम्परा • श्रुतसंवेगी महाश्रमण</span>
+              <span>दिगम्बर जैन परम्परा • निर्ग्रन्थ महामुनिराज</span>
             </div>
 
             {/* Title & Name */}
@@ -42,7 +42,7 @@ export default function HeroSection({ data }: HeroSectionProps) {
             </h1>
 
             {/* Mahamantra Highlight Box */}
-            <div className="glass-card rounded-2xl p-4 sm:p-6 border-l-4 border-l-amber-500 shadow-sm max-w-xl mx-auto lg:mx-0">
+            {/* <div className="glass-card rounded-2xl p-4 sm:p-6 border-l-4 border-l-amber-500 shadow-sm max-w-xl mx-auto lg:mx-0">
               <div className="text-xs uppercase tracking-widest text-amber-800 font-semibold mb-1">
                 पावन महामंत्र
               </div>
@@ -52,17 +52,17 @@ export default function HeroSection({ data }: HeroSectionProps) {
               <p className="text-xs text-gray-600 mt-2 font-sans">
                 व्यर्थ की बातों व अशुभ विचारों को अनदेखा कर आत्मशुद्धि के मार्ग पर चलें।
               </p>
-            </div>
+            </div> */}
 
             {/* Concise Bio Teaser */}
             <p className="text-base sm:text-lg text-gray-700 font-sans leading-relaxed max-w-2xl mx-auto lg:mx-0">
-              पूर्वाश्रम में बाल ब्रह्मचारी प्राणेश जी (B.Sc.), जिन्होंने 05 फ़रवरी 2004 को सिद्धक्षेत्र गजपंथ (नासिक) में आचार्य श्री 108 सुविधि सागर जी महाराज से मुनि दीक्षा प्राप्त की। समस्त परिग्रहों का पूर्ण त्याग कर आप आगमानुसारी चर्या का पालन कर रहे हैं।
+              पूर्वाश्रम में बाल ब्रह्मचारी प्राणेश जी (B.Sc.), जिन्होंने 05 फ़रवरी 2004 को सिद्धक्षेत्र गजपंथ (नासिक) में मुनि दीक्षा प्राप्त की। समस्त परिग्रहों का पूर्ण त्याग कर आप आगमानुसारी चर्या का पालन कर रहे हैं।
             </p>
 
             {/* Primary Action CTA Buttons */}
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
-              <Link 
-                href="/biography" 
+              <Link
+                href="/biography"
                 className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-amber-600 to-amber-500 text-white font-medium text-sm shadow-md hover:shadow-lg hover:from-amber-700 hover:to-amber-600 transition-all flex items-center gap-2"
               >
                 <Feather className="w-4 h-4" />
@@ -70,8 +70,8 @@ export default function HeroSection({ data }: HeroSectionProps) {
                 <ChevronRight className="w-4 h-4 opacity-80" />
               </Link>
 
-              <Link 
-                href="#vihar" 
+              <Link
+                href="#vihar"
                 className="px-6 py-3.5 rounded-xl glass-card text-[#1C1E26] font-medium text-sm hover:bg-amber-100/50 transition-all flex items-center gap-2 border border-amber-300/50"
               >
                 <MapPin className="w-4 h-4 text-amber-700" />
@@ -86,13 +86,13 @@ export default function HeroSection({ data }: HeroSectionProps) {
             <div className="relative w-full max-w-md">
               {/* Outer Golden Aura */}
               <div className="absolute -inset-1 bg-gradient-to-r from-amber-300 via-amber-500 to-amber-200 rounded-3xl blur-md opacity-40"></div>
-              
+
               <div className="relative glass-card rounded-3xl p-6 sm:p-8 space-y-6 text-center border border-amber-200">
                 {/* Muni Shri Portrait */}
                 <div className="w-36 h-36 mx-auto rounded-full overflow-hidden bg-gradient-to-tr from-amber-100 to-amber-50 border-4 border-amber-300/80 shadow-md">
-                  <img 
-                    src="/suvandya-sagar-ji.webp" 
-                    alt="मुनि श्री 108 सुवन्द्य सागर जी महाराज" 
+                  <img
+                    src="/suvandya-sagar-ji.webp"
+                    alt="मुनि श्री 108 सुवन्द्य सागर जी महाराज"
                     className="w-full h-full object-cover object-top"
                   />
                 </div>
@@ -126,8 +126,8 @@ export default function HeroSection({ data }: HeroSectionProps) {
                   </div>
                 </div>
 
-                <a 
-                  href="#pravachan" 
+                <a
+                  href="#pravachan"
                   className="block w-full py-2.5 rounded-lg bg-amber-50 text-amber-900 font-medium text-xs hover:bg-amber-100 transition-colors border border-amber-200"
                 >
                   प्रवचन एवं स्वाध्याय देखें →

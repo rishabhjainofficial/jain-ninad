@@ -17,13 +17,13 @@ export default function BiographyPage() {
 
       <main className="flex-1 py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-          
+
           {/* Header Banner */}
           <div className="text-center space-y-4">
             <div className="w-40 h-40 mx-auto rounded-full overflow-hidden border-4 border-amber-300 shadow-lg bg-amber-50">
-              <img 
-                src="/suvandya-sagar-ji.webp" 
-                alt="पूज्य निर्ग्रन्थ मुनि श्री 108 सुवन्द्य सागर जी महाराज" 
+              <img
+                src="/suvandya-sagar-ji.webp"
+                alt="पूज्य निर्ग्रन्थ मुनि श्री 108 सुवन्द्य सागर जी महाराज"
                 className="w-full h-full object-cover object-top"
               />
             </div>
@@ -43,7 +43,7 @@ export default function BiographyPage() {
 
           {/* Life Journey Section */}
           <div className="space-y-8">
-            
+
             {/* Card 1: Birth & Purvashram */}
             <div className="glass-card rounded-2xl p-6 sm:p-8 border border-amber-200/60 shadow-xs space-y-4">
               <div className="flex items-center gap-3">
@@ -54,7 +54,7 @@ export default function BiographyPage() {
                   जन्म एवं पूर्वाश्रम (Purvashram & Birth)
                 </h2>
               </div>
-              
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-sans bg-amber-50/50 p-4 rounded-xl border border-amber-200/40">
                 <div><strong>पूर्वाश्रम नाम:</strong> बाल ब्रह्मचारी प्राणेश प्रदीप हेडकर जैन</div>
                 <div><strong>जन्म दिनांक:</strong> 03 अप्रैल 1972</div>
@@ -79,7 +79,7 @@ export default function BiographyPage() {
                   ब्रह्मचर्य व्रत एवं मुनि दीक्षा
                 </h2>
               </div>
-              
+
               <div className="space-y-3 text-sm text-gray-700 font-sans">
                 <div className="flex items-start gap-3 p-3 bg-white/80 rounded-xl border border-amber-200/50">
                   <CheckCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
@@ -91,7 +91,7 @@ export default function BiographyPage() {
                 <div className="flex items-start gap-3 p-3 bg-white/80 rounded-xl border border-amber-200/50">
                   <CheckCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
                   <div>
-                    <strong>मुनि दीक्षा दिनांक व स्थान:</strong> <strong>05 फ़रवरी 2004</strong> को सिद्धक्षेत्र गजपंथ, नासिक (महाराष्ट्र) में <strong>आचार्य श्री 108 सुविधि सागर जी महाराज</strong> के पावन कर-कमलों से मुनि दीक्षा प्राप्त की।
+                    <strong>मुनि दीक्षा दिनांक व स्थान:</strong> <strong>05 फ़रवरी 2004</strong> को सिद्धक्षेत्र गजपंथ, नासिक (महाराष्ट्र) में <strong>आचार्य श्री 108 सन्मति सागर जी महाराज</strong> के पावन कर-कमलों से मुनि दीक्षा प्राप्त की।
                   </div>
                 </div>
               </div>
@@ -139,13 +139,16 @@ export default function BiographyPage() {
                   <span className="font-bold text-amber-900">2026 (वर्तमान चातुर्मास):</span> सलूम्बर (राजस्थान)
                 </div>
                 <div className="p-3 bg-white rounded-xl border border-amber-200">
-                  <span className="font-bold text-amber-800">2025:</span> बोरगांव मंजी, अकोला (महाराष्ट्र)
+                  <span className="font-bold text-amber-800">2025:</span> बोरगांव मंजू, अकोला (महाराष्ट्र)
                 </div>
                 <div className="p-3 bg-white rounded-xl border border-amber-200">
-                  <span className="font-bold text-amber-800">2024:</span> नरवाली (राजस्थान)
+                  <span className="font-bold text-amber-800">2024:</span> खमेरा, बांसवाड़ा (राजस्थान)
                 </div>
                 <div className="p-3 bg-white rounded-xl border border-amber-200">
-                  <span className="font-bold text-amber-800">2023:</span> नरवाली (राजस्थान)
+                  <span className="font-bold text-amber-800">2023:</span> सुल्तानपुर (महाराष्ट्र)
+                </div>
+                <div className="p-3 bg-white rounded-xl border border-amber-200">
+                  <span className="font-bold text-amber-800">2022:</span> खमेरा, बांसवाड़ा (राजस्थान)
                 </div>
               </div>
             </div>
@@ -153,8 +156,8 @@ export default function BiographyPage() {
           </div>
 
           <div className="text-center pt-6">
-            <Link 
-              href="/" 
+            <Link
+              href="/"
               className="px-6 py-3 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-sm font-medium transition-colors shadow-sm inline-flex items-center gap-2"
             >
               <span>मुख्य पृष्ठ पर वापस जाएं (Back to Home)</span>

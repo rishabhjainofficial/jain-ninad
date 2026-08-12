@@ -2,19 +2,19 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { 
-  Sparkles, 
-  MapPin, 
-  BookOpen, 
-  Radio, 
-  Feather, 
-  Calendar, 
-  Image as ImageIcon, 
-  Award, 
-  Newspaper, 
-  ChevronDown, 
-  ShieldCheck, 
-  Menu, 
+import {
+  Sparkles,
+  MapPin,
+  BookOpen,
+  Radio,
+  Feather,
+  Calendar,
+  Image as ImageIcon,
+  Award,
+  Newspaper,
+  ChevronDown,
+  ShieldCheck,
+  Menu,
   X
 } from 'lucide-react';
 import { YouTubeIcon, InstagramIcon, FacebookIcon, WhatsAppIcon, TelegramIcon } from './SocialIcons';
@@ -43,7 +43,7 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center space-x-3.5 text-xs">
-            <a href="https://www.youtube.com/@munisuvandyasagar" target="_blank" rel="noreferrer" className="text-amber-200/70 hover:text-red-400 transition-colors flex items-center gap-1">
+            <a href="https://www.youtube.com/@jainninad1008" target="_blank" rel="noreferrer" className="text-amber-200/70 hover:text-red-400 transition-colors flex items-center gap-1">
               <YouTubeIcon className="w-3.5 h-3.5 text-red-500" />
               <span className="hidden md:inline">YouTube</span>
             </a>
@@ -79,9 +79,9 @@ export default function Navbar() {
             {/* Brand Logo */}
             <Link href="/" className="flex items-center gap-3 group">
               <div className="w-12 h-12 rounded-full overflow-hidden bg-gradient-to-tr from-amber-600 via-amber-500 to-amber-300 flex items-center justify-center shadow-md border-2 border-amber-300/80 group-hover:scale-105 transition-transform flex-shrink-0">
-                <img 
-                  src="/suvandya-sagar-ji.webp" 
-                  alt="गुरु सुवन्द्य सागर" 
+                <img
+                  src="/suvandya-sagar-ji.webp"
+                  alt="गुरु सुवन्द्य सागर"
                   className="w-full h-full object-cover object-top"
                 />
               </div>
@@ -90,7 +90,7 @@ export default function Navbar() {
                   गुरु सुवन्द्य सागर
                 </span>
                 <span className="text-[11px] text-amber-800/70 tracking-widest uppercase font-medium">
-                  Spiritual Guidance & Peace
+                  श्रावक धर्म दानम् एवं पूजन
                 </span>
               </div>
             </Link>
@@ -117,10 +117,10 @@ export default function Navbar() {
                       <Sparkles className="w-4 h-4 text-amber-600" />
                       <span>Muni Sangh (मुनि संघ)</span>
                     </Link>
-                    <Link href="/muni-sangh/vihar-schedules" className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-[#1C1E26] hover:bg-amber-50/80 hover:text-amber-700 transition-colors">
+                    {/* <Link href="/muni-sangh/vihar-schedules" className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-[#1C1E26] hover:bg-amber-50/80 hover:text-amber-700 transition-colors">
                       <MapPin className="w-4 h-4 text-amber-600" />
                       <span>Vihar Schedules (विहार कार्यक्रम)</span>
-                    </Link>
+                    </Link> */}
                   </div>
                 )}
               </div>
@@ -149,20 +149,15 @@ export default function Navbar() {
                 )}
               </div>
 
-              <Link href="/#vihar" className="px-3.5 py-2 rounded-lg text-sm font-medium text-[#1C1E26] hover:text-amber-700 hover:bg-amber-50/60 transition-colors flex items-center gap-1.5">
-                <MapPin className="w-4 h-4 text-amber-600" />
-                <span>Vihar Schedule</span>
-              </Link>
-
               <Link href="/#granth" className="px-3.5 py-2 rounded-lg text-sm font-medium text-[#1C1E26] hover:text-amber-700 hover:bg-amber-50/60 transition-colors flex items-center gap-1.5">
                 <BookOpen className="w-4 h-4 text-amber-600" />
-                <span>Granth Treasury</span>
+                <span>E शास्त्र</span>
               </Link>
 
-              <Link href="/#updates" className="px-3.5 py-2 rounded-lg text-sm font-medium text-[#1C1E26] hover:text-amber-700 hover:bg-amber-50/60 transition-colors flex items-center gap-1.5">
+              {/* <Link href="/#updates" className="px-3.5 py-2 rounded-lg text-sm font-medium text-[#1C1E26] hover:text-amber-700 hover:bg-amber-50/60 transition-colors flex items-center gap-1.5">
                 <Newspaper className="w-4 h-4 text-amber-600" />
                 <span>Updates & Blog</span>
-              </Link>
+              </Link> */}
             </div>
 
             {/* Mobile Menu Toggle Button */}
@@ -180,8 +175,8 @@ export default function Navbar() {
         {/* Mobile Dropdown Drawer */}
         {isMobileMenuOpen && (
           <div className="lg:hidden glass-card border-t border-amber-200/50 px-4 pt-2 pb-6 space-y-2 animate-in slide-in-from-top-4 duration-200">
-            <Link 
-              href="/" 
+            <Link
+              href="/"
               onClick={() => setIsMobileMenuOpen(false)}
               className="block px-3 py-2 rounded-md text-base font-medium text-[#1C1E26] hover:bg-amber-50"
             >
@@ -190,8 +185,8 @@ export default function Navbar() {
 
             <div className="border-t border-amber-100 pt-2">
               <span className="px-3 text-xs font-semibold uppercase text-amber-800 tracking-wider">Muni Shri</span>
-              <Link 
-                href="/biography" 
+              <Link
+                href="/biography"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="block px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-amber-50"
               >
@@ -201,22 +196,22 @@ export default function Navbar() {
 
             <div className="border-t border-amber-100 pt-2">
               <span className="px-3 text-xs font-semibold uppercase text-amber-800 tracking-wider">Deshna & Pravachan</span>
-              <Link 
-                href="/#pravachan" 
+              <Link
+                href="/#pravachan"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="block px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-amber-50"
               >
                 Deshna Pravachan (देशना प्रवचन)
               </Link>
-              <Link 
-                href="/#jivan-neeti" 
+              <Link
+                href="/#jivan-neeti"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="block px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-amber-50"
               >
                 Jivan Neeti (जीवन नीति)
               </Link>
-              <Link 
-                href="/#podcasts" 
+              <Link
+                href="/#podcasts"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="block px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-amber-50"
               >
@@ -225,22 +220,22 @@ export default function Navbar() {
             </div>
 
             <div className="border-t border-amber-100 pt-2 space-y-1">
-              <Link 
-                href="/#vihar" 
+              <Link
+                href="/#vihar"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="block px-3 py-2 rounded-md text-base font-medium text-[#1C1E26] hover:bg-amber-50"
               >
                 Vihar Schedule
               </Link>
-              <Link 
-                href="/#granth" 
+              <Link
+                href="/#granth"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="block px-3 py-2 rounded-md text-base font-medium text-[#1C1E26] hover:bg-amber-50"
               >
                 Granth Treasury
               </Link>
-              <Link 
-                href="/#updates" 
+              <Link
+                href="/#updates"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="block px-3 py-2 rounded-md text-base font-medium text-[#1C1E26] hover:bg-amber-50"
               >

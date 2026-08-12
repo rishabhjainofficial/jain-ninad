@@ -9,9 +9,9 @@ export default function Footer() {
   return (
     <footer className="bg-[#1C1E26] text-amber-100/80 pt-16 pb-8 border-t border-amber-500/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-        
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          
+
           {/* 1. Brand & Intro */}
           <div className="space-y-4">
             <div className="flex items-center gap-3">
@@ -38,24 +38,24 @@ export default function Footer() {
                   जीवन परिचय (Biography)
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link href="/#vihar" className="hover:text-amber-300 transition-colors">
                   विहार कार्यक्रम (Vihar Schedule)
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link href="/#pravachan" className="hover:text-amber-300 transition-colors">
                   प्रवचन एवं स्वाध्याय (Pravachan & Swadhyay)
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link href="/#jivan-neeti" className="hover:text-amber-300 transition-colors">
                   जीवन नीति सूत्र (Jivan Neeti)
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link href="/#granth" className="hover:text-amber-300 transition-colors">
-                  ग्रंथ भंडार (Granth Treasury)
+                  ग्रंथ भंडार (E शास्त्र)
                 </Link>
               </li>
               <li>
@@ -68,11 +68,11 @@ export default function Footer() {
                   बिहार व कार्यक्रम समाचार (Updates)
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link href="/admin" className="hover:text-amber-300 transition-colors text-amber-400 font-medium">
                   प्रशासनिक पैनल (Admin Panel)
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </div>
 
@@ -82,50 +82,50 @@ export default function Footer() {
               पावन सोशल मीडिया (Social Media)
             </h4>
             <div className="flex flex-wrap items-center gap-3 pt-1">
-              <a 
-                href="https://www.youtube.com/@munisuvandyasagar" 
-                target="_blank" 
-                rel="noreferrer" 
+              <a
+                href="https://www.youtube.com/@jainninad1008"
+                target="_blank"
+                rel="noreferrer"
                 title="YouTube"
                 className="p-2.5 rounded-xl bg-red-600/20 hover:bg-red-600 text-red-500 hover:text-white transition-colors border border-red-500/20"
               >
                 <YouTubeIcon className="w-5 h-5" />
               </a>
 
-              <a 
-                href="https://www.instagram.com/munisuvandyasagar" 
-                target="_blank" 
-                rel="noreferrer" 
+              <a
+                href="https://www.instagram.com/munisuvandyasagar"
+                target="_blank"
+                rel="noreferrer"
                 title="Instagram"
                 className="p-2.5 rounded-xl bg-pink-600/20 hover:bg-gradient-to-tr hover:from-amber-500 hover:via-pink-500 hover:to-purple-600 text-pink-400 hover:text-white transition-colors border border-pink-500/20"
               >
                 <InstagramIcon className="w-5 h-5" />
               </a>
 
-              <a 
-                href="https://www.facebook.com/munisuvandyasagar" 
-                target="_blank" 
-                rel="noreferrer" 
+              <a
+                href="https://www.facebook.com/munisuvandyasagar"
+                target="_blank"
+                rel="noreferrer"
                 title="Facebook"
                 className="p-2.5 rounded-xl bg-blue-600/20 hover:bg-blue-600 text-blue-400 hover:text-white transition-colors border border-blue-500/20"
               >
                 <FacebookIcon className="w-5 h-5" />
               </a>
 
-              <a 
-                href="https://api.whatsapp.com/send/?phone=919669885159" 
-                target="_blank" 
-                rel="noreferrer" 
+              <a
+                href="https://api.whatsapp.com/send/?phone=919669885159"
+                target="_blank"
+                rel="noreferrer"
                 title="WhatsApp"
                 className="p-2.5 rounded-xl bg-emerald-600/20 hover:bg-emerald-600 text-emerald-400 hover:text-white transition-colors border border-emerald-500/20"
               >
                 <WhatsAppIcon className="w-5 h-5" />
               </a>
 
-              <a 
-                href="https://t.me/munisuvandyasagar" 
-                target="_blank" 
-                rel="noreferrer" 
+              <a
+                href="https://t.me/munisuvandyasagar"
+                target="_blank"
+                rel="noreferrer"
                 title="Telegram"
                 className="p-2.5 rounded-xl bg-sky-600/20 hover:bg-sky-500 text-sky-400 hover:text-white transition-colors border border-sky-500/20"
               >
@@ -141,9 +141,9 @@ export default function Footer() {
           <p>© {new Date().getFullYear()} मुनि श्री 108 सुवन्द्य सागर जी महाराज (Muni Shri 108 Suvandyasagar Ji Maharaj). सर्वाधिकार सुरक्षित।</p>
           <div className="flex items-center gap-1.5">
             <span>Built with devotion by</span>
-            <a 
-              href="https://dev-rishabh.vercel.app/" 
-              target="_blank" 
+            <a
+              href="https://dev-rishabh.vercel.app/"
+              target="_blank"
               rel="noreferrer"
               className="text-amber-400 font-semibold hover:text-amber-300 underline underline-offset-2 transition-colors"
             >

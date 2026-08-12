@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Navbar from '@/components/Navbar';
+import BannerSection from '@/components/BannerSection';
 import HeroSection from '@/components/HeroSection';
 import ViharScheduleSection from '@/components/ViharScheduleSection';
 import PravachanSection from '@/components/PravachanSection';
@@ -42,16 +43,17 @@ export default function Home() {
       <Navbar />
 
       <main className="flex-1">
+        <BannerSection bannerImage="/banner1.png" />
         <HeroSection data={data} />
-        <ViharScheduleSection 
-          currentLocation={data.currentLocation} 
-          currentStayDetails={data.currentStayDetails} 
-          schedules={data.viharSchedules} 
-        />
+        {/* <ViharScheduleSection
+          currentLocation={data.currentLocation}
+          currentStayDetails={data.currentStayDetails}
+          schedules={data.viharSchedules}
+        /> */}
         <PravachanSection pravachans={data.pravachans} />
-        <JivanNeetiSection quotes={data.jivanNeetiQuotes} />
+        {/* <JivanNeetiSection quotes={data.jivanNeetiQuotes} /> */}
         <GranthSection books={data.granthBooks} />
-        <UpdatesSection blogs={data.blogs} podcasts={data.podcasts} />
+        {/* <UpdatesSection blogs={data.blogs} podcasts={data.podcasts} /> */}
       </main>
 
       <Footer />
