@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Radio, Play, Sparkles, BookOpen, Headphones, X } from 'lucide-react';
 import { PravachanItem } from '@/lib/store';
+import { extractYouTubeId } from '@/lib/youtube';
 
 interface PravachanSectionProps {
   pravachans: PravachanItem[];
@@ -24,6 +25,8 @@ export default function PravachanSection({ pravachans }: PravachanSectionProps) 
   const filteredItems = selectedCategory === 'All'
     ? pravachans
     : pravachans.filter(item => item.category === selectedCategory);
+
+  const cleanVideoId = extractYouTubeId(activeVideoId);
 
   return (
     <section id="pravachan" className="py-16 bg-white relative">
@@ -104,7 +107,7 @@ export default function PravachanSection({ pravachans }: PravachanSectionProps) 
         </div>
 
         {/* Video Player Modal */}
-        {activeVideoId && (
+        {cleanVideoId && (
           <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex items-center justify-center p-4">
             <div className="relative w-full max-w-4xl glass-card rounded-2xl overflow-hidden bg-black shadow-2xl border border-amber-500/30">
               <button 
@@ -117,7 +120,7 @@ export default function PravachanSection({ pravachans }: PravachanSectionProps) 
               <div className="relative pt-[56.25%]">
                 <iframe
                   className="absolute inset-0 w-full h-full"
-                  src={`https://www.youtube-nocookie.com/embed/${activeVideoId}?autoplay=1`}
+                  src={`https://www.youtube-nocookie.com/embed/${cleanVideoId}?autoplay=1`}
                   title="Pravachan Video"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen

@@ -12,6 +12,7 @@ import {
   BlogUpdate,
   fetchSiteDataFromDb
 } from '@/lib/store';
+import { extractYouTubeId } from '@/lib/youtube';
 import { 
   Plus, 
   Trash2, 
@@ -830,9 +831,13 @@ export default function AdminPage() {
                 </select>
                 <input
                   type="text"
-                  placeholder="YouTube Video ID (e.g. dQw4w9WgXcQ)"
+                  placeholder="YouTube Video ID or Full URL (e.g. vy-firwwrPw)"
                   value={newPravachan.youtubeId}
-                  onChange={(e) => setNewPravachan({ ...newPravachan, youtubeId: e.target.value })}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    const extracted = extractYouTubeId(val);
+                    setNewPravachan({ ...newPravachan, youtubeId: extracted || val });
+                  }}
                   className="px-3 py-2 text-xs rounded-xl bg-white border border-amber-200"
                 />
               </div>
