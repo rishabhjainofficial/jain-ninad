@@ -9,7 +9,11 @@ const globalForPrisma = globalThis as unknown as {
 
 function getPgPool() {
   if (globalForPrisma.pgPool) return globalForPrisma.pgPool;
-  const connectionString = process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/jain_ninad_db?schema=public';
+  const connectionString =
+    process.env.DATABASE_URL ||
+    process.env.jain_ninad_db_PRISMA_DATABASE_URL ||
+    process.env.jain_ninad_db_POSTGRES_URL ||
+    'postgresql://postgres:postgres@localhost:5432/jain_ninad_db?schema=public';
   const pool = new pg.Pool({ connectionString, max: 10 });
   if (process.env.NODE_ENV !== 'production') {
     globalForPrisma.pgPool = pool;
