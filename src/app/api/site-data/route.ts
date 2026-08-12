@@ -43,10 +43,17 @@ export async function GET() {
       blogs,
     });
   } catch (error) {
-    console.error('Error fetching aggregated site data:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch site data' },
-      { status: 500 }
-    );
+    console.error('Error fetching aggregated site data from DB (falling back):', error);
+    return NextResponse.json({
+      currentLocation: "दिगंबर जैन श्रमण भवन, नागदा बाजार, सलूम्बर (राजस्थान)",
+      currentStayDetails: "परम पूज्य निर्ग्रन्थ मुनि श्री 108 सुवन्द्य सागर जी महाराज ससंघ का पावन चातुर्मास प्रवास एवं स्वाध्याय charyaa",
+      mahamantraText: "ॐ Ignoraay नमः  |  ॐ Deletaaya नमः",
+      viharSchedules: [],
+      pravachans: [],
+      jivanNeetiQuotes: [],
+      granthBooks: [],
+      podcasts: [],
+      blogs: [],
+    });
   }
 }
