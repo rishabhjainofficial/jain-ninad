@@ -30,7 +30,11 @@ import {
   LogOut,
   Upload,
   FileText,
-  Loader2
+  Loader2,
+  Edit,
+  Pencil,
+  Calendar,
+  X
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -48,6 +52,7 @@ export default function AdminPage() {
   const [activeTab, setActiveTab] = useState<'vihar' | 'pravachan' | 'neeti' | 'granth' | 'blog'>('vihar');
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [uploadingPdf, setUploadingPdf] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   // New Vihar item state
   const [newVihar, setNewVihar] = useState<Partial<ViharSchedule>>({
@@ -73,6 +78,13 @@ export default function AdminPage() {
   const [newBlog, setNewBlog] = useState<Partial<BlogUpdate>>({
     title: '', category: 'Bihar Updates', snippet: '', content: '', author: 'प्रचार समिति', date: 'Feb 2025'
   });
+
+  // Editing state for each tab
+  const [editingVihar, setEditingVihar] = useState<ViharSchedule | null>(null);
+  const [editingPravachan, setEditingPravachan] = useState<PravachanItem | null>(null);
+  const [editingNeeti, setEditingNeeti] = useState<JivanNeetiQuote | null>(null);
+  const [editingGranth, setEditingGranth] = useState<GranthBook | null>(null);
+  const [editingBlog, setEditingBlog] = useState<BlogUpdate | null>(null);
 
   // Check existing token on mount
   useEffect(() => {
@@ -155,6 +167,7 @@ export default function AdminPage() {
 
   // General Header Update
   const handleUpdateGeneral = async (currentLocation: string, currentStayDetails: string, mahamantraText: string) => {
+    setIsSaving(true);
     try {
       const res = await fetch('/api/site-settings', {
         method: 'PUT',
@@ -169,12 +182,15 @@ export default function AdminPage() {
       }
     } catch (e) {
       console.error('Update general error:', e);
+    } finally {
+      setIsSaving(false);
     }
   };
 
   // Vihar Handlers
   const handleAddVihar = async () => {
     if (!newVihar.title || !newVihar.date) return;
+    setIsSaving(true);
     try {
       const res = await fetch('/api/vihar-schedules', {
         method: 'POST',
@@ -188,6 +204,29 @@ export default function AdminPage() {
       }
     } catch (e) {
       console.error('Add vihar error:', e);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleUpdateVihar = async () => {
+    if (!editingVihar || !editingVihar.id) return;
+    setIsSaving(true);
+    try {
+      const res = await fetch('/api/vihar-schedules', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editingVihar),
+      });
+      if (res.ok) {
+        await loadSiteData();
+        setEditingVihar(null);
+        triggerNotify();
+      }
+    } catch (e) {
+      console.error('Update vihar error:', e);
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -206,6 +245,7 @@ export default function AdminPage() {
   // Pravachan Handlers
   const handleAddPravachan = async () => {
     if (!newPravachan.title) return;
+    setIsSaving(true);
     try {
       const res = await fetch('/api/pravachans', {
         method: 'POST',
@@ -219,6 +259,29 @@ export default function AdminPage() {
       }
     } catch (e) {
       console.error('Add pravachan error:', e);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleUpdatePravachan = async () => {
+    if (!editingPravachan || !editingPravachan.id) return;
+    setIsSaving(true);
+    try {
+      const res = await fetch('/api/pravachans', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editingPravachan),
+      });
+      if (res.ok) {
+        await loadSiteData();
+        setEditingPravachan(null);
+        triggerNotify();
+      }
+    } catch (e) {
+      console.error('Update pravachan error:', e);
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -237,6 +300,7 @@ export default function AdminPage() {
   // Jivan Neeti Handlers
   const handleAddNeeti = async () => {
     if (!newNeeti.quoteHindi) return;
+    setIsSaving(true);
     try {
       const res = await fetch('/api/quotes', {
         method: 'POST',
@@ -250,6 +314,29 @@ export default function AdminPage() {
       }
     } catch (e) {
       console.error('Add neeti error:', e);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleUpdateNeeti = async () => {
+    if (!editingNeeti || !editingNeeti.id) return;
+    setIsSaving(true);
+    try {
+      const res = await fetch('/api/quotes', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editingNeeti),
+      });
+      if (res.ok) {
+        await loadSiteData();
+        setEditingNeeti(null);
+        triggerNotify();
+      }
+    } catch (e) {
+      console.error('Update neeti error:', e);
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -266,7 +353,7 @@ export default function AdminPage() {
   };
 
   // PDF File Upload Handler for Granth
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, isEditMode = false) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -282,7 +369,11 @@ export default function AdminPage() {
 
       const json = await res.json();
       if (res.ok && json.filePath) {
-        setNewGranth(prev => ({ ...prev, pdfFilePath: json.filePath }));
+        if (isEditMode && editingGranth) {
+          setEditingGranth(prev => prev ? { ...prev, pdfFilePath: json.filePath } : null);
+        } else {
+          setNewGranth(prev => ({ ...prev, pdfFilePath: json.filePath }));
+        }
       } else {
         alert(json.error || 'PDF Upload failed');
       }
@@ -297,6 +388,7 @@ export default function AdminPage() {
   // Granth Handlers
   const handleAddGranth = async () => {
     if (!newGranth.titleHindi) return;
+    setIsSaving(true);
     try {
       const res = await fetch('/api/granths', {
         method: 'POST',
@@ -310,6 +402,29 @@ export default function AdminPage() {
       }
     } catch (e) {
       console.error('Add granth error:', e);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleUpdateGranth = async () => {
+    if (!editingGranth || !editingGranth.id) return;
+    setIsSaving(true);
+    try {
+      const res = await fetch('/api/granths', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editingGranth),
+      });
+      if (res.ok) {
+        await loadSiteData();
+        setEditingGranth(null);
+        triggerNotify();
+      }
+    } catch (e) {
+      console.error('Update granth error:', e);
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -328,6 +443,7 @@ export default function AdminPage() {
   // Blog Handlers
   const handleAddBlog = async () => {
     if (!newBlog.title) return;
+    setIsSaving(true);
     try {
       const res = await fetch('/api/blogs', {
         method: 'POST',
@@ -341,6 +457,44 @@ export default function AdminPage() {
       }
     } catch (e) {
       console.error('Add blog error:', e);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleUpdateBlog = async () => {
+    if (!editingBlog || !editingBlog.id) return;
+    setIsSaving(true);
+    try {
+      const res = await fetch('/api/blogs', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editingBlog),
+      });
+      if (res.ok) {
+        await loadSiteData();
+        setEditingBlog(null);
+        triggerNotify();
+      }
+    } catch (e) {
+      console.error('Update blog error:', e);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newBlog),
+      });
+      if (res.ok) {
+        await loadSiteData();
+        setNewBlog({ title: '', category: 'Bihar Updates', snippet: '', content: '', author: 'प्रचार समिति', date: 'Feb 2025' });
+        triggerNotify();
+      }
+    } catch (e) {
+      console.error('Add blog error:', e);
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -605,27 +759,53 @@ export default function AdminPage() {
               </h3>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                <input
-                  type="text"
-                  placeholder="तिथि (e.g. 05 मार्च 2025)"
-                  value={newVihar.date}
-                  onChange={(e) => setNewVihar({ ...newVihar, date: e.target.value })}
-                  className="px-3 py-2 text-xs rounded-xl bg-white border border-amber-200"
-                />
-                <input
-                  type="text"
-                  placeholder="कार्यक्रम का नाम (Title)"
-                  value={newVihar.title}
-                  onChange={(e) => setNewVihar({ ...newVihar, title: e.target.value })}
-                  className="px-3 py-2 text-xs rounded-xl bg-white border border-amber-200"
-                />
-                <input
-                  type="text"
-                  placeholder="स्थान (Location)"
-                  value={newVihar.location}
-                  onChange={(e) => setNewVihar({ ...newVihar, location: e.target.value })}
-                  className="px-3 py-2 text-xs rounded-xl bg-white border border-amber-200"
-                />
+                <div className="flex flex-col gap-1">
+                  <label className="text-[10px] font-semibold text-gray-500 flex items-center gap-1">
+                    <Calendar className="w-3 h-3 text-amber-600" />
+                    <span>तिथि (Date)</span>
+                  </label>
+                  <div className="flex items-center gap-1">
+                    <input
+                      type="date"
+                      className="px-2 py-1.5 text-xs rounded-xl bg-white border border-amber-200"
+                      onChange={(e) => {
+                        if (e.target.value) {
+                          const parts = e.target.value.split('-');
+                          if (parts.length === 3) {
+                            const d = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+                            const formatted = d.toLocaleDateString('hi-IN', { day: '2-digit', month: 'long', year: 'numeric' });
+                            setNewVihar({ ...newVihar, date: formatted });
+                          }
+                        }
+                      }}
+                    />
+                    <input
+                      type="text"
+                      placeholder="e.g. 05 मार्च 2025"
+                      value={newVihar.date}
+                      onChange={(e) => setNewVihar({ ...newVihar, date: e.target.value })}
+                      className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-amber-200"
+                    />
+                  </div>
+                </div>
+                <div className="flex flex-col justify-end">
+                  <input
+                    type="text"
+                    placeholder="कार्यक्रम का नाम (Title)"
+                    value={newVihar.title}
+                    onChange={(e) => setNewVihar({ ...newVihar, title: e.target.value })}
+                    className="px-3 py-2 text-xs rounded-xl bg-white border border-amber-200"
+                  />
+                </div>
+                <div className="flex flex-col justify-end">
+                  <input
+                    type="text"
+                    placeholder="स्थान (Location)"
+                    value={newVihar.location}
+                    onChange={(e) => setNewVihar({ ...newVihar, location: e.target.value })}
+                    className="px-3 py-2 text-xs rounded-xl bg-white border border-amber-200"
+                  />
+                </div>
               </div>
 
               <textarea
@@ -649,13 +829,116 @@ export default function AdminPage() {
 
                 <button
                   onClick={handleAddVihar}
-                  className="px-5 py-2 bg-amber-600 hover:bg-amber-700 text-white font-medium text-xs rounded-xl shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer"
+                  disabled={isSaving}
+                  className="px-5 py-2 bg-amber-600 hover:bg-amber-700 disabled:opacity-60 text-white font-medium text-xs rounded-xl shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer"
                 >
-                  <Plus className="w-4 h-4" />
-                  <span>कार्यक्रम जोड़ें</span>
+                  {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
+                  <span>{isSaving ? 'सहेजा जा रहा है...' : 'कार्यक्रम जोड़ें'}</span>
                 </button>
               </div>
             </div>
+
+            {/* Edit Vihar Modal */}
+            {editingVihar && (
+              <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+                <div className="glass-card bg-white rounded-2xl p-6 max-w-lg w-full space-y-4 border border-amber-300 shadow-2xl relative">
+                  <div className="flex items-center justify-between border-b border-amber-200 pb-3">
+                    <h3 className="font-serif font-bold text-base text-[#1C1E26] flex items-center gap-2">
+                      <Pencil className="w-4 h-4 text-amber-600" />
+                      <span>विहार कार्यक्रम अपडेट करें</span>
+                    </h3>
+                    <button onClick={() => setEditingVihar(null)} className="p-1 rounded-full text-gray-500 hover:bg-amber-100">
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+
+                  <div className="space-y-3 text-xs">
+                    <div>
+                      <label className="font-semibold text-gray-700 block mb-1">तिथि (Date)</label>
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="date"
+                          className="px-2 py-1.5 text-xs rounded-xl bg-white border border-amber-200"
+                          onChange={(e) => {
+                            if (e.target.value) {
+                              const parts = e.target.value.split('-');
+                              if (parts.length === 3) {
+                                const d = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+                                const formatted = d.toLocaleDateString('hi-IN', { day: '2-digit', month: 'long', year: 'numeric' });
+                                setEditingVihar({ ...editingVihar, date: formatted });
+                              }
+                            }
+                          }}
+                        />
+                        <input
+                          type="text"
+                          value={editingVihar.date}
+                          onChange={(e) => setEditingVihar({ ...editingVihar, date: e.target.value })}
+                          className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-amber-200"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="font-semibold text-gray-700 block mb-1">शीर्षक (Title)</label>
+                      <input
+                        type="text"
+                        value={editingVihar.title}
+                        onChange={(e) => setEditingVihar({ ...editingVihar, title: e.target.value })}
+                        className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-amber-200"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="font-semibold text-gray-700 block mb-1">स्थान (Location)</label>
+                      <input
+                        type="text"
+                        value={editingVihar.location}
+                        onChange={(e) => setEditingVihar({ ...editingVihar, location: e.target.value })}
+                        className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-amber-200"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="font-semibold text-gray-700 block mb-1">विवरण (Details)</label>
+                      <textarea
+                        value={editingVihar.details}
+                        onChange={(e) => setEditingVihar({ ...editingVihar, details: e.target.value })}
+                        rows={2}
+                        className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-amber-200"
+                      />
+                    </div>
+
+                    <label className="flex items-center gap-2 text-xs text-gray-700 pt-1">
+                      <input
+                        type="checkbox"
+                        checked={!!editingVihar.isCurrent}
+                        onChange={(e) => setEditingVihar({ ...editingVihar, isCurrent: e.target.checked })}
+                        className="rounded border-amber-300 text-amber-600 focus:ring-amber-500"
+                      />
+                      <span>वर्तमान मुख्य कार्यक्रम (Highlight Flag)</span>
+                    </label>
+                  </div>
+
+                  <div className="flex items-center justify-end gap-2 pt-2 border-t border-amber-100">
+                    <button
+                      onClick={() => setEditingVihar(null)}
+                      className="px-4 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-xs font-medium"
+                    >
+                      रद्द करें
+                    </button>
+                    <button
+                      onClick={handleUpdateVihar}
+                      disabled={isSaving}
+                      className="px-5 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold flex items-center gap-1.5"
+                    >
+                      {isSaving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
+                      <span>अपडेट करें</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* List */}
             <div className="space-y-3">
@@ -673,12 +956,22 @@ export default function AdminPage() {
                     <h4 className="text-sm font-serif font-bold text-[#1C1E26]">{item.title}</h4>
                     <p className="text-xs text-gray-500">{item.location} - {item.details}</p>
                   </div>
-                  <button
-                    onClick={() => handleDeleteVihar(item.id)}
-                    className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
+                  <div className="flex items-center gap-1">
+                    <button
+                      onClick={() => setEditingVihar(item)}
+                      className="p-2 text-amber-700 hover:bg-amber-100 rounded-lg transition-colors cursor-pointer"
+                      title="संपादित करें (Edit)"
+                    >
+                      <Pencil className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => handleDeleteVihar(item.id)}
+                      className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+                      title="हटाएं (Delete)"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -766,13 +1059,116 @@ export default function AdminPage() {
 
               <button
                 onClick={handleAddGranth}
-                disabled={uploadingPdf}
-                className="px-5 py-2 bg-amber-600 hover:bg-amber-700 text-white font-medium text-xs rounded-xl shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer"
+                disabled={uploadingPdf || isSaving}
+                className="px-5 py-2 bg-amber-600 hover:bg-amber-700 disabled:opacity-60 text-white font-medium text-xs rounded-xl shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer"
               >
-                <Plus className="w-4 h-4" />
-                <span>ग्रंथ जोड़ें</span>
+                {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
+                <span>{isSaving ? 'सहेजा जा रहा है...' : 'ग्रंथ जोड़ें'}</span>
               </button>
             </div>
+
+            {/* Edit Granth Modal */}
+            {editingGranth && (
+              <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+                <div className="glass-card bg-white rounded-2xl p-6 max-w-lg w-full space-y-4 border border-amber-300 shadow-2xl relative">
+                  <div className="flex items-center justify-between border-b border-amber-200 pb-3">
+                    <h3 className="font-serif font-bold text-base text-[#1C1E26] flex items-center gap-2">
+                      <Pencil className="w-4 h-4 text-amber-600" />
+                      <span>ग्रंथ साहित्य अपडेट करें</span>
+                    </h3>
+                    <button onClick={() => setEditingGranth(null)} className="p-1 rounded-full text-gray-500 hover:bg-amber-100">
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+
+                  <div className="space-y-3 text-xs">
+                    <div>
+                      <label className="font-semibold text-gray-700 block mb-1">ग्रंथ नाम (Hindi Title)</label>
+                      <input
+                        type="text"
+                        value={editingGranth.titleHindi}
+                        onChange={(e) => setEditingGranth({ ...editingGranth, titleHindi: e.target.value })}
+                        className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-amber-200"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="font-semibold text-gray-700 block mb-1">English Title</label>
+                      <input
+                        type="text"
+                        value={editingGranth.titleEnglish}
+                        onChange={(e) => setEditingGranth({ ...editingGranth, titleEnglish: e.target.value })}
+                        className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-amber-200"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <label className="font-semibold text-gray-700 block mb-1">श्लोक संख्या (Verses Count)</label>
+                        <input
+                          type="text"
+                          value={editingGranth.versesCount}
+                          onChange={(e) => setEditingGranth({ ...editingGranth, versesCount: e.target.value })}
+                          className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-amber-200"
+                        />
+                      </div>
+                      <div>
+                        <label className="font-semibold text-gray-700 block mb-1">भाषा (Language)</label>
+                        <input
+                          type="text"
+                          value={editingGranth.language}
+                          onChange={(e) => setEditingGranth({ ...editingGranth, language: e.target.value })}
+                          className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-amber-200"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="font-semibold text-gray-700 block mb-1">विवरण (Description)</label>
+                      <textarea
+                        value={editingGranth.description}
+                        onChange={(e) => setEditingGranth({ ...editingGranth, description: e.target.value })}
+                        rows={2}
+                        className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-amber-200"
+                      />
+                    </div>
+
+                    <div className="p-3 rounded-xl border border-dashed border-amber-300 bg-amber-50/50 space-y-2">
+                      <label className="text-xs font-semibold text-amber-900 flex items-center gap-1.5">
+                        <Upload className="w-3.5 h-3.5 text-amber-700" />
+                        <span>नई PDF फाइल बदलें</span>
+                      </label>
+                      <input
+                        type="file"
+                        accept="application/pdf"
+                        onChange={(e) => handleFileUpload(e, true)}
+                        className="text-xs text-gray-600 file:mr-3 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-700 file:text-white"
+                      />
+                      {editingGranth.pdfFilePath && (
+                        <p className="text-[11px] font-mono text-emerald-700 truncate">वर्तमान: {editingGranth.pdfFilePath}</p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-end gap-2 pt-2 border-t border-amber-100">
+                    <button
+                      onClick={() => setEditingGranth(null)}
+                      className="px-4 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-xs font-medium"
+                    >
+                      रद्द करें
+                    </button>
+                    <button
+                      onClick={handleUpdateGranth}
+                      disabled={isSaving || uploadingPdf}
+                      className="px-5 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold flex items-center gap-1.5"
+                    >
+                      {isSaving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
+                      <span>अपडेट करें</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {data.granthBooks.map((b) => (
@@ -791,12 +1187,22 @@ export default function AdminPage() {
                       <p className="text-[11px] font-mono text-gray-400 truncate">{b.pdfFilePath}</p>
                     )}
                   </div>
-                  <button
-                    onClick={() => handleDeleteGranth(b.id)}
-                    className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
+                  <div className="flex items-center gap-1">
+                    <button
+                      onClick={() => setEditingGranth(b)}
+                      className="p-2 text-amber-700 hover:bg-amber-100 rounded-lg transition-colors cursor-pointer"
+                      title="संपादित करें (Edit)"
+                    >
+                      <Pencil className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => handleDeleteGranth(b.id)}
+                      className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+                      title="हटाएं (Delete)"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -812,34 +1218,60 @@ export default function AdminPage() {
                 <span>नया प्रवचन जोड़ें</span>
               </h3>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                <input
-                  type="text"
-                  placeholder="शीर्षक (Title)"
-                  value={newPravachan.title}
-                  onChange={(e) => setNewPravachan({ ...newPravachan, title: e.target.value })}
-                  className="px-3 py-2 text-xs rounded-xl bg-white border border-amber-200"
-                />
-                <select
-                  value={newPravachan.category}
-                  onChange={(e) => setNewPravachan({ ...newPravachan, category: e.target.value as any })}
-                  className="px-3 py-2 text-xs rounded-xl bg-white border border-amber-200"
-                >
-                  <option value="Pravachan">Pravachan</option>
-                  <option value="Audio Book">Audio Book</option>
-                  <option value="Bhajan">Bhajan</option>
-                </select>
-                <input
-                  type="text"
-                  placeholder="YouTube Video ID or Full URL (e.g. vy-firwwrPw)"
-                  value={newPravachan.youtubeId}
-                  onChange={(e) => {
-                    const val = e.target.value;
-                    const extracted = extractYouTubeId(val);
-                    setNewPravachan({ ...newPravachan, youtubeId: extracted || val });
-                  }}
-                  className="px-3 py-2 text-xs rounded-xl bg-white border border-amber-200"
-                />
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+                <div className="flex flex-col gap-1 md:col-span-1">
+                  <label className="text-[10px] font-semibold text-gray-500 flex items-center gap-1">
+                    <Calendar className="w-3 h-3 text-amber-600" />
+                    <span>तिथि (Date)</span>
+                  </label>
+                  <input
+                    type="date"
+                    className="px-2 py-1.5 text-xs rounded-xl bg-white border border-amber-200"
+                    onChange={(e) => {
+                      if (e.target.value) {
+                        const parts = e.target.value.split('-');
+                        if (parts.length === 3) {
+                          const d = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+                          const formatted = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                          setNewPravachan({ ...newPravachan, date: formatted });
+                        }
+                      }
+                    }}
+                  />
+                </div>
+                <div className="flex flex-col justify-end md:col-span-1">
+                  <input
+                    type="text"
+                    placeholder="शीर्षक (Title)"
+                    value={newPravachan.title}
+                    onChange={(e) => setNewPravachan({ ...newPravachan, title: e.target.value })}
+                    className="px-3 py-2 text-xs rounded-xl bg-white border border-amber-200"
+                  />
+                </div>
+                <div className="flex flex-col justify-end md:col-span-1">
+                  <select
+                    value={newPravachan.category}
+                    onChange={(e) => setNewPravachan({ ...newPravachan, category: e.target.value as any })}
+                    className="px-3 py-2 text-xs rounded-xl bg-white border border-amber-200"
+                  >
+                    <option value="Pravachan">Pravachan</option>
+                    <option value="Audio Book">Audio Book</option>
+                    <option value="Bhajan">Bhajan</option>
+                  </select>
+                </div>
+                <div className="flex flex-col justify-end md:col-span-1">
+                  <input
+                    type="text"
+                    placeholder="YouTube Video ID or Full URL"
+                    value={newPravachan.youtubeId}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      const extracted = extractYouTubeId(val);
+                      setNewPravachan({ ...newPravachan, youtubeId: extracted || val });
+                    }}
+                    className="px-3 py-2 text-xs rounded-xl bg-white border border-amber-200"
+                  />
+                </div>
               </div>
 
               <textarea
@@ -852,29 +1284,152 @@ export default function AdminPage() {
 
               <button
                 onClick={handleAddPravachan}
-                className="px-5 py-2 bg-amber-600 hover:bg-amber-700 text-white font-medium text-xs rounded-xl shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer"
+                disabled={isSaving}
+                className="px-5 py-2 bg-amber-600 hover:bg-amber-700 disabled:opacity-60 text-white font-medium text-xs rounded-xl shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer"
               >
-                <Plus className="w-4 h-4" />
-                <span>प्रवचन जोड़ें</span>
+                {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
+                <span>{isSaving ? 'सहेजा जा रहा है...' : 'प्रवचन जोड़ें'}</span>
               </button>
             </div>
+
+            {/* Edit Pravachan Modal */}
+            {editingPravachan && (
+              <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+                <div className="glass-card bg-white rounded-2xl p-6 max-w-lg w-full space-y-4 border border-amber-300 shadow-2xl relative">
+                  <div className="flex items-center justify-between border-b border-amber-200 pb-3">
+                    <h3 className="font-serif font-bold text-base text-[#1C1E26] flex items-center gap-2">
+                      <Pencil className="w-4 h-4 text-amber-600" />
+                      <span>प्रवचन अपडेट करें</span>
+                    </h3>
+                    <button onClick={() => setEditingPravachan(null)} className="p-1 rounded-full text-gray-500 hover:bg-amber-100">
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+
+                  <div className="space-y-3 text-xs">
+                    <div>
+                      <label className="font-semibold text-gray-700 block mb-1">तिथि (Date)</label>
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="date"
+                          className="px-2 py-1.5 text-xs rounded-xl bg-white border border-amber-200"
+                          onChange={(e) => {
+                            if (e.target.value) {
+                              const parts = e.target.value.split('-');
+                              if (parts.length === 3) {
+                                const d = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+                                const formatted = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                                setEditingPravachan({ ...editingPravachan, date: formatted });
+                              }
+                            }
+                          }}
+                        />
+                        <input
+                          type="text"
+                          value={editingPravachan.date}
+                          onChange={(e) => setEditingPravachan({ ...editingPravachan, date: e.target.value })}
+                          className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-amber-200"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="font-semibold text-gray-700 block mb-1">शीर्षक (Title)</label>
+                      <input
+                        type="text"
+                        value={editingPravachan.title}
+                        onChange={(e) => setEditingPravachan({ ...editingPravachan, title: e.target.value })}
+                        className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-amber-200"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="font-semibold text-gray-700 block mb-1">श्रेणी (Category)</label>
+                      <select
+                        value={editingPravachan.category}
+                        onChange={(e) => setEditingPravachan({ ...editingPravachan, category: e.target.value as any })}
+                        className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-amber-200"
+                      >
+                        <option value="Pravachan">Pravachan</option>
+                        <option value="Audio Book">Audio Book</option>
+                        <option value="Bhajan">Bhajan</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="font-semibold text-gray-700 block mb-1">YouTube Video ID / URL</label>
+                      <input
+                        type="text"
+                        value={editingPravachan.youtubeId || ''}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          const extracted = extractYouTubeId(val);
+                          setEditingPravachan({ ...editingPravachan, youtubeId: extracted || val });
+                        }}
+                        className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-amber-200"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="font-semibold text-gray-700 block mb-1">विवरण (Description)</label>
+                      <textarea
+                        value={editingPravachan.description}
+                        onChange={(e) => setEditingPravachan({ ...editingPravachan, description: e.target.value })}
+                        rows={2}
+                        className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-amber-200"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-end gap-2 pt-2 border-t border-amber-100">
+                    <button
+                      onClick={() => setEditingPravachan(null)}
+                      className="px-4 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-xs font-medium"
+                    >
+                      रद्द करें
+                    </button>
+                    <button
+                      onClick={handleUpdatePravachan}
+                      disabled={isSaving}
+                      className="px-5 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold flex items-center gap-1.5"
+                    >
+                      {isSaving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
+                      <span>अपडेट करें</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {data.pravachans.map((p) => (
                 <div key={p.id} className="glass-card rounded-xl p-4 flex items-start justify-between gap-4 border border-amber-200">
                   <div className="space-y-1">
-                    <span className="text-[10px] font-bold text-amber-900 bg-amber-100 px-2 py-0.5 rounded">
-                      {p.category}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-bold text-amber-900 bg-amber-100 px-2 py-0.5 rounded">
+                        {p.category}
+                      </span>
+                      {p.date && <span className="text-xs text-gray-400 font-sans">{p.date}</span>}
+                    </div>
                     <h4 className="text-sm font-serif font-bold text-[#1C1E26]">{p.title}</h4>
                     <p className="text-xs text-gray-500 line-clamp-2">{p.description}</p>
                   </div>
-                  <button
-                    onClick={() => handleDeletePravachan(p.id)}
-                    className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
+                  <div className="flex items-center gap-1">
+                    <button
+                      onClick={() => setEditingPravachan(p)}
+                      className="p-2 text-amber-700 hover:bg-amber-100 rounded-lg transition-colors cursor-pointer"
+                      title="संपादित करें (Edit)"
+                    >
+                      <Pencil className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => handleDeletePravachan(p.id)}
+                      className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+                      title="हटाएं (Delete)"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -908,23 +1463,90 @@ export default function AdminPage() {
 
               <button
                 onClick={handleAddNeeti}
-                className="px-5 py-2 bg-amber-600 hover:bg-amber-700 text-white font-medium text-xs rounded-xl shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer"
+                disabled={isSaving}
+                className="px-5 py-2 bg-amber-600 hover:bg-amber-700 disabled:opacity-60 text-white font-medium text-xs rounded-xl shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer"
               >
-                <Plus className="w-4 h-4" />
-                <span>सूत्र जोड़ें</span>
+                {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
+                <span>{isSaving ? 'सहेजा जा रहा है...' : 'सूत्र जोड़ें'}</span>
               </button>
             </div>
+
+            {/* Edit Neeti Modal */}
+            {editingNeeti && (
+              <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+                <div className="glass-card bg-white rounded-2xl p-6 max-w-lg w-full space-y-4 border border-amber-300 shadow-2xl relative">
+                  <div className="flex items-center justify-between border-b border-amber-200 pb-3">
+                    <h3 className="font-serif font-bold text-base text-[#1C1E26] flex items-center gap-2">
+                      <Pencil className="w-4 h-4 text-amber-600" />
+                      <span>जीवन नीति सूत्र अपडेट करें</span>
+                    </h3>
+                    <button onClick={() => setEditingNeeti(null)} className="p-1 rounded-full text-gray-500 hover:bg-amber-100">
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+
+                  <div className="space-y-3 text-xs">
+                    <div>
+                      <label className="font-semibold text-gray-700 block mb-1">सूत्र (Hindi Quote)</label>
+                      <textarea
+                        value={editingNeeti.quoteHindi}
+                        onChange={(e) => setEditingNeeti({ ...editingNeeti, quoteHindi: e.target.value })}
+                        rows={3}
+                        className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-amber-200"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="font-semibold text-gray-700 block mb-1">English Translation</label>
+                      <input
+                        type="text"
+                        value={editingNeeti.quoteEnglish || ''}
+                        onChange={(e) => setEditingNeeti({ ...editingNeeti, quoteEnglish: e.target.value })}
+                        className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-amber-200"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-end gap-2 pt-2 border-t border-amber-100">
+                    <button
+                      onClick={() => setEditingNeeti(null)}
+                      className="px-4 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-xs font-medium"
+                    >
+                      रद्द करें
+                    </button>
+                    <button
+                      onClick={handleUpdateNeeti}
+                      disabled={isSaving}
+                      className="px-5 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold flex items-center gap-1.5"
+                    >
+                      {isSaving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
+                      <span>अपडेट करें</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
 
             <div className="space-y-3">
               {data.jivanNeetiQuotes.map((q) => (
                 <div key={q.id} className="glass-card rounded-xl p-4 flex items-center justify-between gap-4 border border-amber-200">
                   <p className="text-sm font-serif font-bold text-[#1C1E26]">"{q.quoteHindi}"</p>
-                  <button
-                    onClick={() => handleDeleteNeeti(q.id)}
-                    className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
+                  <div className="flex items-center gap-1">
+                    <button
+                      onClick={() => setEditingNeeti(q)}
+                      className="p-2 text-amber-700 hover:bg-amber-100 rounded-lg transition-colors cursor-pointer"
+                      title="संपादित करें (Edit)"
+                    >
+                      <Pencil className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => handleDeleteNeeti(q.id)}
+                      className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+                      title="हटाएं (Delete)"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -940,23 +1562,47 @@ export default function AdminPage() {
                 <span>नया ब्लॉग/समाचार पोस्ट जोड़ें</span>
               </h3>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <input
-                  type="text"
-                  placeholder="शीर्षक (Title)"
-                  value={newBlog.title}
-                  onChange={(e) => setNewBlog({ ...newBlog, title: e.target.value })}
-                  className="px-3 py-2 text-xs rounded-xl bg-white border border-amber-200"
-                />
-                <select
-                  value={newBlog.category}
-                  onChange={(e) => setNewBlog({ ...newBlog, category: e.target.value as any })}
-                  className="px-3 py-2 text-xs rounded-xl bg-white border border-amber-200"
-                >
-                  <option value="Bihar Updates">Bihar Updates</option>
-                  <option value="Program Updates">Program Updates</option>
-                  <option value="Blog">Blog</option>
-                </select>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div className="flex flex-col gap-1">
+                  <label className="text-[10px] font-semibold text-gray-500 flex items-center gap-1">
+                    <Calendar className="w-3 h-3 text-amber-600" />
+                    <span>तिथि (Date)</span>
+                  </label>
+                  <input
+                    type="date"
+                    className="px-2 py-1.5 text-xs rounded-xl bg-white border border-amber-200"
+                    onChange={(e) => {
+                      if (e.target.value) {
+                        const parts = e.target.value.split('-');
+                        if (parts.length === 3) {
+                          const d = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+                          const formatted = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                          setNewBlog({ ...newBlog, date: formatted });
+                        }
+                      }
+                    }}
+                  />
+                </div>
+                <div className="flex flex-col justify-end">
+                  <input
+                    type="text"
+                    placeholder="शीर्षक (Title)"
+                    value={newBlog.title}
+                    onChange={(e) => setNewBlog({ ...newBlog, title: e.target.value })}
+                    className="px-3 py-2 text-xs rounded-xl bg-white border border-amber-200"
+                  />
+                </div>
+                <div className="flex flex-col justify-end">
+                  <select
+                    value={newBlog.category}
+                    onChange={(e) => setNewBlog({ ...newBlog, category: e.target.value as any })}
+                    className="px-3 py-2 text-xs rounded-xl bg-white border border-amber-200"
+                  >
+                    <option value="Bihar Updates">Bihar Updates</option>
+                    <option value="Program Updates">Program Updates</option>
+                    <option value="Blog">Blog</option>
+                  </select>
+                </div>
               </div>
 
               <textarea
@@ -977,29 +1623,148 @@ export default function AdminPage() {
 
               <button
                 onClick={handleAddBlog}
-                className="px-5 py-2 bg-amber-600 hover:bg-amber-700 text-white font-medium text-xs rounded-xl shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer"
+                disabled={isSaving}
+                className="px-5 py-2 bg-amber-600 hover:bg-amber-700 disabled:opacity-60 text-white font-medium text-xs rounded-xl shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer"
               >
-                <Plus className="w-4 h-4" />
-                <span>ब्लॉग प्रकाशित करें</span>
+                {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
+                <span>{isSaving ? 'सहेजा जा रहा है...' : 'ब्लॉग प्रकाशित करें'}</span>
               </button>
             </div>
+
+            {/* Edit Blog Modal */}
+            {editingBlog && (
+              <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+                <div className="glass-card bg-white rounded-2xl p-6 max-w-lg w-full space-y-4 border border-amber-300 shadow-2xl relative">
+                  <div className="flex items-center justify-between border-b border-amber-200 pb-3">
+                    <h3 className="font-serif font-bold text-base text-[#1C1E26] flex items-center gap-2">
+                      <Pencil className="w-4 h-4 text-amber-600" />
+                      <span>समाचार / ब्लॉग अपडेट करें</span>
+                    </h3>
+                    <button onClick={() => setEditingBlog(null)} className="p-1 rounded-full text-gray-500 hover:bg-amber-100">
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+
+                  <div className="space-y-3 text-xs">
+                    <div>
+                      <label className="font-semibold text-gray-700 block mb-1">तिथि (Date)</label>
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="date"
+                          className="px-2 py-1.5 text-xs rounded-xl bg-white border border-amber-200"
+                          onChange={(e) => {
+                            if (e.target.value) {
+                              const parts = e.target.value.split('-');
+                              if (parts.length === 3) {
+                                const d = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+                                const formatted = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                                setEditingBlog({ ...editingBlog, date: formatted });
+                              }
+                            }
+                          }}
+                        />
+                        <input
+                          type="text"
+                          value={editingBlog.date}
+                          onChange={(e) => setEditingBlog({ ...editingBlog, date: e.target.value })}
+                          className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-amber-200"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="font-semibold text-gray-700 block mb-1">शीर्षक (Title)</label>
+                      <input
+                        type="text"
+                        value={editingBlog.title}
+                        onChange={(e) => setEditingBlog({ ...editingBlog, title: e.target.value })}
+                        className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-amber-200"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="font-semibold text-gray-700 block mb-1">श्रेणी (Category)</label>
+                      <select
+                        value={editingBlog.category}
+                        onChange={(e) => setEditingBlog({ ...editingBlog, category: e.target.value as any })}
+                        className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-amber-200"
+                      >
+                        <option value="Bihar Updates">Bihar Updates</option>
+                        <option value="Program Updates">Program Updates</option>
+                        <option value="Blog">Blog</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="font-semibold text-gray-700 block mb-1">संक्षिप्त विवरण (Snippet)</label>
+                      <textarea
+                        value={editingBlog.snippet}
+                        onChange={(e) => setEditingBlog({ ...editingBlog, snippet: e.target.value })}
+                        rows={2}
+                        className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-amber-200"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="font-semibold text-gray-700 block mb-1">पूरा समाचार (Content)</label>
+                      <textarea
+                        value={editingBlog.content}
+                        onChange={(e) => setEditingBlog({ ...editingBlog, content: e.target.value })}
+                        rows={4}
+                        className="w-full px-3 py-2 text-xs rounded-xl bg-white border border-amber-200"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-end gap-2 pt-2 border-t border-amber-100">
+                    <button
+                      onClick={() => setEditingBlog(null)}
+                      className="px-4 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-xs font-medium"
+                    >
+                      रद्द करें
+                    </button>
+                    <button
+                      onClick={handleUpdateBlog}
+                      disabled={isSaving}
+                      className="px-5 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold flex items-center gap-1.5"
+                    >
+                      {isSaving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
+                      <span>अपडेट करें</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {data.blogs.map((b) => (
                 <div key={b.id} className="glass-card rounded-xl p-4 flex items-start justify-between gap-4 border border-amber-200">
                   <div className="space-y-1">
-                    <span className="text-[10px] font-bold text-amber-900 bg-amber-100 px-2 py-0.5 rounded">
-                      {b.category}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-bold text-amber-900 bg-amber-100 px-2 py-0.5 rounded">
+                        {b.category}
+                      </span>
+                      {b.date && <span className="text-xs text-gray-400 font-sans">{b.date}</span>}
+                    </div>
                     <h4 className="text-sm font-serif font-bold text-[#1C1E26]">{b.title}</h4>
                     <p className="text-xs text-gray-500 line-clamp-2">{b.snippet}</p>
                   </div>
-                  <button
-                    onClick={() => handleDeleteBlog(b.id)}
-                    className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
+                  <div className="flex items-center gap-1">
+                    <button
+                      onClick={() => setEditingBlog(b)}
+                      className="p-2 text-amber-700 hover:bg-amber-100 rounded-lg transition-colors cursor-pointer"
+                      title="संपादित करें (Edit)"
+                    >
+                      <Pencil className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => handleDeleteBlog(b.id)}
+                      className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+                      title="हटाएं (Delete)"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
