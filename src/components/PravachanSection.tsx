@@ -89,11 +89,7 @@ export default function PravachanSection({ pravachans }: PravachanSectionProps) 
                 </p>
               </div>
 
-              <div className="p-4 bg-amber-50/50 border-t border-amber-100 flex items-center justify-between">
-                <span className="text-xs text-amber-800 font-medium">
-                  {item.duration || 'प्रवचन'}
-                </span>
-                
+              <div className="p-4 bg-amber-50/50 border-t border-amber-100 flex items-center justify-end">
                 <button
                   onClick={() => setActiveVideoId(item.youtubeId || 'dQw4w9WgXcQ')}
                   className="px-3.5 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-700 text-white text-xs font-medium flex items-center gap-1.5 shadow-xs transition-colors"
