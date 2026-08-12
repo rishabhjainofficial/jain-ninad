@@ -482,21 +482,6 @@ export default function AdminPage() {
       setIsSaving(false);
     }
   };
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newBlog),
-      });
-      if (res.ok) {
-        await loadSiteData();
-        setNewBlog({ title: '', category: 'Bihar Updates', snippet: '', content: '', author: 'प्रचार समिति', date: 'Feb 2025' });
-        triggerNotify();
-      }
-    } catch (e) {
-      console.error('Add blog error:', e);
-    } finally {
-      setIsSaving(false);
-    }
-  };
 
   const handleDeleteBlog = async (id: string) => {
     try {
