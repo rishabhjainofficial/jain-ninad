@@ -219,7 +219,7 @@ const INITIAL_DATA: SiteData = {
   ]
 };
 
-const STORAGE_KEY = "jain_ninad_site_data_v1";
+const STORAGE_KEY = "jain_ninad_site_data_v2";
 
 export function getSiteData(): SiteData {
   if (typeof window === "undefined") return INITIAL_DATA;

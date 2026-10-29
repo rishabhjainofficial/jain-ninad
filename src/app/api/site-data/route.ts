@@ -20,7 +20,7 @@ export async function GET() {
     });
 
     const granthBooks = await prisma.granthBook.findMany({
-      orderBy: { createdAt: 'desc' },
+      orderBy: { id: 'asc' },
     });
 
     const podcasts = await prisma.podcastEpisode.findMany({
