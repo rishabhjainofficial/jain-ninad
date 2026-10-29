@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { BookOpen, FileText, ArrowUpRight, X, ExternalLink } from 'lucide-react';
+import { BookOpen, FileText, ArrowUpRight, X, ExternalLink, Download } from 'lucide-react';
+import Link from 'next/link';
 import { GranthBook } from '@/lib/store';
 import PdfThumbnail from './PdfThumbnail';
 
@@ -11,6 +12,9 @@ interface GranthSectionProps {
 
 export default function GranthSection({ books }: GranthSectionProps) {
   const [selectedPdf, setSelectedPdf] = useState<{ url: string; title: string } | null>(null);
+
+  // Show up to 6 featured books on homepage
+  const displayBooks = books.slice(0, 6);
 
   return (
     <section id="granth" className="py-16 bg-white relative">
@@ -26,13 +30,13 @@ export default function GranthSection({ books }: GranthSectionProps) {
             मुनि श्री द्वारा रचित महान ग्रंथ सम्पाद
           </h2>
           <p className="text-sm text-gray-600">
-            170 से अधिक ग्रंथों एवं 37,000 संस्कृत-प्राकृत श्लोकों का पावन सृजन।
+            170 से अधिक ग्रंथों एवं 37,000 संस्कृत-प्राकृत श्लोकों का पावन सृजन। 39 मौलिक ग्रंथ PDF स्वाध्याय हेतु उपलब्ध।
           </p>
         </div>
 
         {/* Books Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {books.map((book) => {
+          {displayBooks.map((book) => {
             const hasPdf = Boolean(book.pdfFilePath || book.pdfLink);
             const pdfUrl = book.pdfFilePath || book.pdfLink || '';
 
@@ -72,9 +76,17 @@ export default function GranthSection({ books }: GranthSectionProps) {
 
                 {/* Description & Action */}
                 <div className="p-6 space-y-4 flex-1 flex flex-col justify-between">
-                  <p className="text-xs text-gray-600 leading-relaxed">
-                    {book.description}
-                  </p>
+                  <div>
+                    <div className="flex items-center justify-between text-[11px] text-gray-500 mb-2">
+                      <span className="font-semibold text-amber-800 bg-amber-50 px-2 py-0.5 rounded">
+                        {book.versesCount}
+                      </span>
+                      <span>{book.language}</span>
+                    </div>
+                    <p className="text-xs text-gray-600 leading-relaxed">
+                      {book.description}
+                    </p>
+                  </div>
 
                   <div className="pt-4 border-t border-amber-100 flex items-center justify-between gap-2">
                     <span className="text-xs font-semibold text-amber-800 flex items-center gap-1">
@@ -82,30 +94,47 @@ export default function GranthSection({ books }: GranthSectionProps) {
                       <span>{hasPdf ? 'PDF उपलब्ध' : 'ग्रंथ स्वाध्याय'}</span>
                     </span>
 
-                    {hasPdf ? (
-                      <button
-                        onClick={() => setSelectedPdf({ url: pdfUrl, title: book.titleHindi })}
-                        className="px-3 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-700 text-white text-xs font-medium flex items-center gap-1 shadow-xs transition-colors cursor-pointer"
-                      >
-                        <FileText className="w-3.5 h-3.5" />
-                        <span>PDF पढ़ें</span>
-                      </button>
-                    ) : (
+                    <div className="flex items-center gap-2">
+                      {hasPdf && (
+                        <button
+                          onClick={() => setSelectedPdf({ url: pdfUrl, title: book.titleHindi })}
+                          className="px-3 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-700 text-white text-xs font-medium flex items-center gap-1 shadow-xs transition-colors cursor-pointer"
+                        >
+                          <FileText className="w-3.5 h-3.5" />
+                          <span>PDF पढ़ें</span>
+                        </button>
+                      )}
+
                       <a 
                         href="https://api.whatsapp.com/send/?phone=919669885159"
                         target="_blank"
                         rel="noreferrer"
                         className="px-3 py-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-900 text-xs font-medium flex items-center gap-1 border border-amber-200 transition-colors"
                       >
-                        <span>मँगवाएं / पढ़ें</span>
+                        <span>मँगवाएं</span>
                         <ArrowUpRight className="w-3.5 h-3.5" />
                       </a>
-                    )}
+                    </div>
                   </div>
                 </div>
               </div>
             );
           })}
+        </div>
+
+        {/* View All Granths CTA Button */}
+        <div className="mt-12 text-center flex flex-col sm:flex-row items-center justify-center gap-3">
+          <Link
+            href="/granth"
+            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-amber-800 hover:bg-amber-900 text-white font-serif font-bold text-sm shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer"
+          >
+            <BookOpen className="w-4 h-4 text-amber-300" />
+            <span>सभी 39+ ग्रंथ देखें (View All Granths)</span>
+            <ArrowUpRight className="w-4 h-4" />
+          </Link>
+          <span className="text-xs text-gray-500 font-sans">
+            (समग्र 39 ग्रंथ ऑनलाइन स्वाध्याय हेतु उपलब्ध)
+          </span>
         </div>
 
       </div>
@@ -121,6 +150,14 @@ export default function GranthSection({ books }: GranthSectionProps) {
                 <h3 className="font-serif font-bold text-lg">{selectedPdf.title}</h3>
               </div>
               <div className="flex items-center gap-3">
+                <a
+                  href={selectedPdf.url}
+                  download
+                  className="text-xs bg-amber-800 hover:bg-amber-700 px-3 py-1.5 rounded-md flex items-center gap-1 transition-colors"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">डाउनलोड</span>
+                </a>
                 <a
                   href={selectedPdf.url}
                   target="_blank"

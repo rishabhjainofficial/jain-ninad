@@ -1,3 +1,5 @@
+import { ALL_UPLOADED_GRANTHS } from '@/lib/granthData';
+
 export interface ViharSchedule {
   id: string;
   date: string;
@@ -181,35 +183,7 @@ const INITIAL_DATA: SiteData = {
     }
   ],
 
-  granthBooks: [
-    {
-      id: "b1",
-      titleHindi: "सम्यग्ज्ञान दीपक",
-      titleEnglish: "Samyagjnana Deepak",
-      description: "जैन दर्शन के मौलिक सिद्धांतों और आत्मसाधना पर रचित 500 से अधिक संस्कृत श्लोक मय व्याख्या।",
-      versesCount: "520 श्लोक",
-      language: "संस्कृत / हिंदी",
-      coverImage: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80"
-    },
-    {
-      id: "b2",
-      titleHindi: "इष्टोपदेश स्वाध्याय तरङ्गिणी",
-      titleEnglish: "Istopadesha Swadhyay Tarangini",
-      description: "आचार्य पूज्यपाद कृत इष्टोपदेश ग्रंथ पर मुनि श्री सुवन्द्य सागर जी की प्रांजल टीका।",
-      versesCount: "350 श्लोक",
-      language: "प्राकृत / हिंदी",
-      coverImage: "https://images.unsplash.com/photo-1532012164546-f43249488629?auto=format&fit=crop&w=600&q=80"
-    },
-    {
-      id: "b3",
-      titleHindi: "आत्मानुशासन भक्ति पुष्प",
-      titleEnglish: "Atmanushasana Bhakti Pushpa",
-      description: "आत्मा के उत्थान और ध्यान साधना हेतु रचित भक्ति श्लोक संग्रह।",
-      versesCount: "1200 श्लोक",
-      language: "संस्कृत",
-      coverImage: "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80"
-    }
-  ],
+  granthBooks: ALL_UPLOADED_GRANTHS,
 
   podcasts: [
     {
@@ -280,7 +254,7 @@ export async function fetchSiteDataFromDb(): Promise<SiteData> {
         viharSchedules: data.viharSchedules || INITIAL_DATA.viharSchedules,
         pravachans: data.pravachans || INITIAL_DATA.pravachans,
         jivanNeetiQuotes: data.jivanNeetiQuotes || INITIAL_DATA.jivanNeetiQuotes,
-        granthBooks: data.granthBooks || INITIAL_DATA.granthBooks,
+        granthBooks: (data.granthBooks && data.granthBooks.length > 0) ? data.granthBooks : INITIAL_DATA.granthBooks,
         podcasts: data.podcasts || INITIAL_DATA.podcasts,
         blogs: data.blogs || INITIAL_DATA.blogs,
       };

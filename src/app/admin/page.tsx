@@ -85,6 +85,7 @@ export default function AdminPage() {
   const [editingNeeti, setEditingNeeti] = useState<JivanNeetiQuote | null>(null);
   const [editingGranth, setEditingGranth] = useState<GranthBook | null>(null);
   const [editingBlog, setEditingBlog] = useState<BlogUpdate | null>(null);
+  const [isSyncingGranths, setIsSyncingGranths] = useState(false);
 
   // Check existing token on mount
   useEffect(() => {
@@ -437,6 +438,27 @@ export default function AdminPage() {
       }
     } catch (e) {
       console.error('Delete granth error:', e);
+    }
+  };
+
+  const handleSyncAllGranths = async () => {
+    if (!confirm('क्या आप सभी 39 अपलोड किए गए ग्रंथों को डेटाबेस में सिंक/सीड करना चाहते हैं?')) return;
+    setIsSyncingGranths(true);
+    try {
+      const res = await fetch('/api/granths/seed', { method: 'POST' });
+      const json = await res.json();
+      if (res.ok) {
+        alert(json.message || 'सभी ग्रंथ सफलतापूर्वक डेटाबेस में सिंक हो गए हैं!');
+        await loadSiteData();
+        triggerNotify();
+      } else {
+        alert('त्रुटि: ' + (json.error || 'सिंक करने में विफल'));
+      }
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : String(e);
+      alert('त्रुटि: ' + msg);
+    } finally {
+      setIsSyncingGranths(false);
     }
   };
 
@@ -966,6 +988,28 @@ export default function AdminPage() {
         {/* TAB 2: GRANTH TREASURY MANAGER (WITH PDF UPLOAD) */}
         {activeTab === 'granth' && (
           <div className="space-y-6">
+            {/* Quick 1-Click Sync for 39 Uploaded Granths */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 bg-amber-50/80 rounded-2xl border border-amber-300/60 shadow-xs">
+              <div>
+                <h4 className="text-sm font-bold text-amber-950 font-serif flex items-center gap-1.5">
+                  <Sparkles className="w-4 h-4 text-amber-600" />
+                  <span>अपलोड किए गए सभी 39 ग्रंथ डेटाबेस में सिंक करें</span>
+                </h4>
+                <p className="text-xs text-amber-800/80 mt-0.5">
+                  public/granth फोल्डर के 39 PDF ग्रंथों का विवरण व फाइल पाथ एक क्लिक में डेटाबेस में सिंक/अपडेट करें।
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={handleSyncAllGranths}
+                disabled={isSyncingGranths}
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-amber-700 hover:bg-amber-800 text-white text-xs font-semibold shadow-xs disabled:opacity-50 transition-colors cursor-pointer shrink-0"
+              >
+                {isSyncingGranths ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Sparkles className="w-3.5 h-3.5 text-amber-300" />}
+                <span>{isSyncingGranths ? 'सिंक हो रहा है...' : 'सभी 39 ग्रंथ DB में सिंक करें'}</span>
+              </button>
+            </div>
+
             <div className="glass-card rounded-2xl p-6 border border-amber-200 space-y-4">
               <h3 className="text-base font-serif font-bold text-[#1C1E26] flex items-center gap-2">
                 <Plus className="w-4 h-4 text-amber-600" />

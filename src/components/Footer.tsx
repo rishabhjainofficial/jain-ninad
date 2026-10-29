@@ -54,7 +54,7 @@ export default function Footer() {
                 </Link>
               </li> */}
               <li>
-                <Link href="/#granth" className="hover:text-amber-300 transition-colors">
+                <Link href="/granth" className="hover:text-amber-300 transition-colors">
                   ग्रंथ भंडार (E शास्त्र)
                 </Link>
               </li>

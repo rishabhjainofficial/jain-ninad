@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { Feather, Award, BookOpen, CheckCircle, GraduationCap, MapPin, Calendar, HeartHandshake } from 'lucide-react';
+import { Feather, BookOpen, CheckCircle, ArrowUpRight } from 'lucide-react';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
@@ -126,6 +126,17 @@ export default function BiographyPage() {
                     हनुमान चरित्र, वृषभोद्धार कथा, इंद्र चरित्र, संत साधना, भद्रबाहू आख्यान, सम्यक्त्व कौमुदी, मल्लिनाथ चरित्र, मेरू-मंदर पुराण, जिनवाणी शतक।
                   </p>
                 </div>
+              </div>
+
+              <div className="pt-2 flex justify-end">
+                <Link
+                  href="/granth"
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-amber-900 bg-amber-100/70 hover:bg-amber-200/80 px-3.5 py-1.5 rounded-xl transition-colors"
+                >
+                  <BookOpen className="w-3.5 h-3.5 text-amber-700" />
+                  <span>ई-शास्त्र लाइब्रेरी में सभी 39 ग्रंथ ऑनलाइन पढ़ें</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </Link>
               </div>
             </div>
 
